@@ -305,7 +305,8 @@ class ObjectAbstract
 
             // check the type matches
             if (isset($field['returns']) && gettype($value) != $field['returns']) {
-                // first try to re-cast
+                // type doesn't match
+                // try to re-cast
                 $try = $value;
                 settype($try, $field['returns']);
                 if ($try == $value) {
