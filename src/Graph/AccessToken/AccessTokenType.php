@@ -24,24 +24,22 @@
  * @link      https://github.com/chrisnoden
  */
 
-namespace Graph;
+namespace Graph\AccessToken;
 
 use Eloquent\Enumeration\Enumeration;
 
 /**
- * Class GraphObject
- * Supported Graph Object models
+ * Class AccessTokenType
  *
- * @category Graph
+ * @category Graph\AccessToken
  * @package  facebook-graph
  * @author   Chris Noden <chris.noden@gmail.com>
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @link     https://github.com/chrisnoden/synergy
  */
-class GraphObject extends Enumeration
+class AccessTokenType extends Enumeration
 {
-
-    const APPLICATION = 'Application';
-//    const PAYMENT     = 'Payment';
-//    const USER        = 'User';
+    const APP = 'Application Access Token';
+    const USER = 'User Access Token';
+    const PAGE = 'Page Access Token';
 }
