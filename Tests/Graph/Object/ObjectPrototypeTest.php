@@ -26,7 +26,7 @@
 
 namespace Graph\Tests\Object;
 
-use Graph\Object\ObjectPrototype;
+use Graph\Object\ObjectAbstract;
 
 class ObjectPrototypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -36,7 +36,7 @@ class ObjectPrototypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testBasicInstantiation()
     {
-        $obj             = new ObjectPrototype();
+        $obj             = new ObjectAbstract();
         $fld_description = $obj->getFieldElementValue('id', 'description');
         // test the ID field details are right
         $testArr = array(
@@ -68,7 +68,7 @@ class ObjectPrototypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetInvalidFieldType()
     {
-        $obj             = new ObjectPrototype();
+        $obj             = new ObjectAbstract();
         $fld_description = $obj->getFieldElementValue('id', 'description');
         $this->setExpectedException('Graph\Exception\InvalidTypeException');
         $obj->setId(123456);
