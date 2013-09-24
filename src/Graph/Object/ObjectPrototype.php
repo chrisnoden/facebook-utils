@@ -320,6 +320,17 @@ class ObjectPrototype
 
 
     /**
+     * All fields and connections returned in one big associative array
+     *
+     * @return array
+     */
+    public function getFieldList()
+    {
+        return array_merge($this->fields, $this->connections);
+    }
+
+
+    /**
      * Return the value of the field
      *
      * @param string $field_name

@@ -32,6 +32,10 @@ use Graph\Object\ObjectFactory;
 class ObjectFactoryTest extends \PHPUnit_Framework_TestCase
 {
 
+    /**
+     * Iterate round all the GraphObject supported Object names
+     * and instantiate a new Object using the Factory::create method
+     */
     public function testObjectCreation()
     {
         foreach (GraphObject::members() as $graph_object) {
@@ -40,7 +44,14 @@ class ObjectFactoryTest extends \PHPUnit_Framework_TestCase
             $class_name = $graph_object->value();
             $obj = ObjectFactory::create($class_name);
             $this->assertInstanceOf('Graph\Object\ObjectPrototype', $obj);
+            $this->assertInstanceOf('Graph\Object\\'.$class_name, $obj);
             $this->assertEquals($class_name, $obj->__toString());
+            // all objects have an ID field - if not then this will throw an InvalidArgumentException
+            $obj->getFieldDetails('id');
+
+            // dispose of the object before next iteration
+            $obj = null;
+            unset($obj);
         }
     }
 }

@@ -31,7 +31,7 @@ use Graph\AccessToken\AccessTokenType;
 /**
  * Class Application
  *
- * @category GmbAdmin\Facebook
+ * @category  Graph\Object
  * @package   facebook-graph
  * @author    Chris Noden <chris.noden@gmail.com>
  * @copyright 2013 Chris Noden
@@ -42,6 +42,9 @@ class Application extends ObjectPrototype implements ObjectInterface
 {
 
     /**
+     * The app_secret is not exposed through the REST interface with Facebook - you must know this to
+     * be able to make authenticated requests where an AppAccessToken is required
+     *
      * @var string
      */
     protected $app_secret;
