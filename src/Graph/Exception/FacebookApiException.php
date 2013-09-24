@@ -27,16 +27,17 @@
 namespace Graph\Exception;
 
 /**
- * Class InvalidArgumentException
- * Fundamental Exception thrown if the Argument/s passed to a method were invalid
+ * Class FacebookApiException
+ * The Facebook API has responded with some unexpected error
  *
  * @category  Graph\Exception
  * @package   facebook-graph
  * @author    Chris Noden <chris.noden@gmail.com>
+ * @copyright 2013 Chris Noden
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @link      https://github.com/chrisnoden
  */
-class InvalidArgumentException extends \Exception
+class FacebookApiException extends FacebookException
 {
 
 }

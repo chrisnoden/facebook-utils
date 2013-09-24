@@ -27,16 +27,15 @@
 namespace Graph\Exception;
 
 /**
- * Class InvalidArgumentException
- * Fundamental Exception thrown if the Argument/s passed to a method were invalid
+ * Class FacebookUnauthorisedUserException
  *
- * @category  Graph\Exception
- * @package   facebook-graph
- * @author    Chris Noden <chris.noden@gmail.com>
- * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
- * @link      https://github.com/chrisnoden
+ * @category GmbAdmin\Exception
+ * @package  gmb-webv2
+ * @author   Chris Noden <chris.noden@gmail.com>
+ * @license  https://www.chrisnoden.com/CLIENT-LICENSE.md Proprietary
+ * @link     https://github.com/chrisnoden/synergy
  */
-class InvalidArgumentException extends \Exception
+class FacebookUnauthorisedUserException extends FacebookException
 {
 
 }

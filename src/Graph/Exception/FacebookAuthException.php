@@ -27,8 +27,8 @@
 namespace Graph\Exception;
 
 /**
- * Class InvalidArgumentException
- * Fundamental Exception thrown if the Argument/s passed to a method were invalid
+ * Class FacebookAuthException
+ * Authentication credentials are failing or not sufficient for the type of request
  *
  * @category  Graph\Exception
  * @package   facebook-graph
@@ -36,7 +36,7 @@ namespace Graph\Exception;
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @link      https://github.com/chrisnoden
  */
-class InvalidArgumentException extends \Exception
+class FacebookAuthException extends FacebookException
 {
 
 }
