@@ -94,6 +94,10 @@ class ObjectAbstractTest extends \PHPUnit_Framework_TestCase
         $obj->setId(123456);
         $this->assertEquals('123456', $obj->getId());
         $this->assertEquals('string', gettype($obj->getId()));
+
+        $obj->setId(true);
+        $this->assertEquals('1', $obj->getId());
+        $this->assertEquals('string', gettype($obj->getId()));
     }
 
 

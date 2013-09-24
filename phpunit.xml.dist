@@ -17,6 +17,9 @@
         <testsuite name="All Tests">
             <directory>./Tests/Graph/</directory>
         </testsuite>
+        <testsuite name="Object Tests">
+            <directory>./Tests/Graph/Object/</directory>
+        </testsuite>
     </testsuites>
 
 </phpunit>
