@@ -65,6 +65,15 @@ class ObjectFactory
     }
 
 
+    /**
+     * Return a GraphObject loaded with data from Facebook Graph API
+     *
+     * @param GraphObjectType $type
+     * @param string|int      $id
+     *
+     * @return ObjectAbstract
+     * @throws UnsupportedObjectException
+     */
     public static function load(GraphObjectType $type, $id)
     {
         $class_name = __NAMESPACE__ . '\\' . $type->value();

@@ -27,6 +27,7 @@
 namespace Graph\Object;
 
 use Graph\Api\GraphRequest;
+use Graph\Exception\FacebookInvalidNodeException;
 use Graph\Exception\UnsupportedObjectException;
 use Graph\Exception\InvalidArgumentException;
 use Graph\Exception\InvalidTypeException;
@@ -81,10 +82,6 @@ class ObjectAbstract
      */
     protected $connections = array();
     /**
-     * @var string originally loaded json
-     */
-    protected $loaded_json;
-    /**
      * @var bool have any values been modified that haven't been persisted to Facebook
      */
     protected $is_modified = false;
@@ -101,70 +98,33 @@ class ObjectAbstract
     /**
      * Load the node and return a populated object
      *
-     * @param mixed $node
-     * @param array $fields (optional) array of field names to fetch (defaults to all)
+     * @param string $id     unique node id
+     * @param array  $fields (optional) array of field names to fetch
      *
-     * @return static
-     * @throws UnsupportedObjectException
+     * @return $this
+     * @throws FacebookInvalidNodeException
      */
-    public static function fetch($node, $fields = array())
+    public function load($id, $fields = array())
     {
         $request = new GraphRequest();
-        $request->setNode($node);
+        $request->setNode($id);
         if (count($fields) > 0) {
             $request->setFields($fields);
         }
         $response = $request->send();
         $arr      = json_decode($response->getBody(true), true);
         if (is_array($arr)) {
-            $obj = new static();
-            $obj->setLoadedJson($response->getBody(true));
             foreach ($arr as $key => $val) {
-                $obj->$key = $val;
+                $this->setFieldValue($key, $val);
             }
 
-            return $obj;
+            $this->is_new = false;
+            $this->is_modified = false;
+            return $this;
         }
 
-        throw new UnsupportedObjectException(
-            sprintf('Node %s not valid', $node)
-        );
-    }
-
-
-    protected function fetchValuesFromFacebook($fields = array())
-    {
-        if (!is_array($fields)) {
-            $fields = array($fields);
-        }
-
-        $auth_type = false;
-        foreach ($fields as $fieldname) {
-            if (isset($this->fields[$fieldname]) &&
-                isset($this->fields[$fieldname]['permissions']) &&
-                $this->fields[$fieldname]['permissions'] !== false
-            ) {
-                $auth_type = $this->fields[$fieldname]['permissions'];
-                break;
-            }
-        }
-
-        $request = new GraphRequest();
-        $request->setNode($this->id);
-        if (isset($this->session)) {
-            $request->setSession($this->session);
-        }
-        $response = $request->send();
-        $arr      = json_decode($response->getBody(true), true);
-        if (is_array($arr)) {
-            $this->setLoadedJson($response->getBody(true));
-            $this->setMemberValuesFromArray($arr);
-
-            return true;
-        }
-
-        throw new UnsupportedObjectException(
-            sprintf('Node %s not valid', $this->id)
+        throw new FacebookInvalidNodeException(
+            sprintf('Id %s not valid', $id)
         );
     }
 
@@ -249,30 +209,6 @@ class ObjectAbstract
     public function __toString()
     {
         return str_replace(__NAMESPACE__ . '\\', '', get_class($this));
-    }
-
-
-    /**
-     * Set the value of loaded_json member
-     *
-     * @param string $loaded_json
-     *
-     * @return void
-     */
-    protected function setLoadedJson($loaded_json)
-    {
-        $this->loaded_json = $loaded_json;
-    }
-
-
-    /**
-     * Value of member loaded_json
-     *
-     * @return string value of member
-     */
-    public function getLoadedJson()
-    {
-        return $this->loaded_json;
     }
 
 
@@ -369,15 +305,23 @@ class ObjectAbstract
 
             // check the type matches
             if (isset($field['returns']) && gettype($value) != $field['returns']) {
-                throw new InvalidTypeException(
-                    sprintf(
-                        '%s field %s expects %s type (%s given)',
-                        str_replace(__NAMESPACE__ . '\\', '', get_class($this)),
-                        $field_name,
-                        $field['returns'],
-                        gettype($value)
-                    )
-                );
+                // first try to re-cast
+                $try = $value;
+                settype($try, $field['returns']);
+                if ($try == $value) {
+                    // type juggling seems to have worked
+                    $value = $try;
+                } else {
+                    throw new InvalidTypeException(
+                        sprintf(
+                            '%s field %s expects %s type (%s given)',
+                            str_replace(__NAMESPACE__ . '\\', '', get_class($this)),
+                            $field_name,
+                            $field['returns'],
+                            gettype($value)
+                        )
+                    );
+                }
             }
 
             // set the value
@@ -392,5 +336,4 @@ class ObjectAbstract
             throw new InvalidArgumentException('Invalid field_name '.$field_name);
         }
     }
-
 }

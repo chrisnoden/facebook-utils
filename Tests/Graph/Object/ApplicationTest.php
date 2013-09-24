@@ -37,7 +37,9 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
     public function testFactoryMethod()
     {
-        $obj = Application::fetch($this->test_app_id); // gambino prod game
+        $obj = new Application();
+        $obj->load($this->test_app_id);
         $this->assertInstanceOf('Graph\Object\Application', $obj);
+        var_dump($obj);
     }
 }
