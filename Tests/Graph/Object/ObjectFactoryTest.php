@@ -40,10 +40,10 @@ class ObjectFactoryTest extends \PHPUnit_Framework_TestCase
     {
         foreach (GraphObjectType::members() as $graph_object) {
             /** @var GraphObjectType $graph_object */
-            $this->assertInstanceOf('Graph\GraphObject', $graph_object);
+            $this->assertInstanceOf('Graph\GraphObjectType', $graph_object);
             $class_name = $graph_object->value();
             $obj = ObjectFactory::create($class_name);
-            $this->assertInstanceOf('Graph\Object\ObjectPrototype', $obj);
+            $this->assertInstanceOf('Graph\Object\ObjectAbstract', $obj);
             $this->assertInstanceOf('Graph\Object\\'.$class_name, $obj);
             $this->assertEquals($class_name, $obj->__toString());
             // all objects have an ID field - if not then this will throw an InvalidArgumentException
