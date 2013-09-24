@@ -308,8 +308,7 @@ class ObjectAbstract
                 // type doesn't match
                 // try to re-cast
                 $try = $value;
-                settype($try, $field['returns']);
-                if ($try == $value) {
+                if (@settype($try, $field['returns']) && $try == $value) {
                     // type juggling seems to have worked
                     $value = $try;
                 } else {

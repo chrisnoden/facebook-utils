@@ -31,15 +31,21 @@ use Graph\Object\Application;
 class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var int
+     * @var int The Graffiti app
      */
     private $test_app_id = 2439131959;
+
 
     public function testFactoryMethod()
     {
         $obj = new Application();
         $obj->load($this->test_app_id);
         $this->assertInstanceOf('Graph\Object\Application', $obj);
-        var_dump($obj);
+        $this->assertEquals('Graffiti ', $obj->getName());
+        $this->assertEquals(
+            'http://www.facebook.com/apps/application.php?id=2439131959',
+            $obj->getLink()
+        );
+        $this->assertEquals('graffitiwall', $obj->getNamespace());
     }
 }

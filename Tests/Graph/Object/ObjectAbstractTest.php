@@ -28,7 +28,7 @@ namespace Graph\Tests\Object;
 
 use Graph\Object\ObjectAbstract;
 
-class ObjectPrototypeTest extends \PHPUnit_Framework_TestCase
+class ObjectAbstractTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -64,14 +64,14 @@ class ObjectPrototypeTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * Test setting a field with a wrong data type (ID expects a string, let's try an integer)
+     * Test setting a field with a wrong data type (ID expects a string, let's try an array)
      */
     public function testSetInvalidFieldType()
     {
         $obj             = new ObjectAbstract();
         $fld_description = $obj->getFieldElementValue('id', 'description');
         $this->setExpectedException('Graph\Exception\InvalidTypeException');
-        $obj->setId(123456);
+        $obj->setId(array(123456));
         // test the ID field details are right
         $testArr = array(
             'description' => $fld_description,
@@ -84,4 +84,11 @@ class ObjectPrototypeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($testArr, $obj->getFieldDetails('id'));
     }
 
+
+    public function testInvalidFieldNames()
+    {
+        $obj = new ObjectAbstract();
+        $this->setExpectedException('Graph\Exception\InvalidArgumentException');
+        $value = $obj->getInvalidField();
+    }
 }
