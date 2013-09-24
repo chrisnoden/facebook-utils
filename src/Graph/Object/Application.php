@@ -38,7 +38,7 @@ use Graph\AccessToken\AccessTokenType;
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @link      https://github.com/chrisnoden
  */
-class Application extends ObjectPrototype implements ObjectInterface
+class Application extends ObjectAbstract implements ObjectInterface
 {
 
     /**

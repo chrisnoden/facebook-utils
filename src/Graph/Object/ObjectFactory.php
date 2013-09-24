@@ -27,6 +27,7 @@
 namespace Graph\Object;
 
 use Graph\Exception\UnsupportedObjectException;
+use Graph\GraphObjectType;
 
 /**
  * Class ObjectFactory
@@ -41,12 +42,12 @@ class ObjectFactory
 {
 
     /**
-     * Return a new Facebook GraphObject
+     * Return a new Facebook GraphObjectType
      *
      * @param string $object graph object name (eg Application, Payment/s, User)
      *
-     * @return ObjectPrototype
-     * @throws UnsupportedObjectException unable to find a GraphObject class to support this
+     * @return ObjectAbstract
+     * @throws UnsupportedObjectException unable to find a GraphObjectType class to support this
      */
     public static function create($object)
     {
@@ -55,11 +56,25 @@ class ObjectFactory
         }
         $object = __NAMESPACE__ . '\\' . ucfirst($object);
         if (class_exists($object)) {
-            /** @var ObjectPrototype $obj */
+            /** @var ObjectAbstract $obj */
             $obj = new $object;
             return $obj;
         } else {
             throw new UnsupportedObjectException('Unsupported Object, class not found for ' . $object);
         }
+    }
+
+
+    public static function load(GraphObjectType $type, $id)
+    {
+        $class_name = __NAMESPACE__ . '\\' . $type->getValue();
+        if (class_exists($class_name)) {
+            /** @var ObjectAbstract $obj */
+            $obj = new $class_name;
+            return $obj;
+        } else {
+            throw new UnsupportedObjectException('Unsupported Object, class not found for ' . $object);
+        }
+
     }
 }

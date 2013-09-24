@@ -26,20 +26,20 @@
 
 namespace Graph\Tests\Object;
 
-use Graph\GraphObject;
+use Graph\GraphObjectType;
 use Graph\Object\ObjectFactory;
 
 class ObjectFactoryTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * Iterate round all the GraphObject supported Object names
+     * Iterate round all the GraphObjectType supported Object names
      * and instantiate a new Object using the Factory::create method
      */
     public function testObjectCreation()
     {
-        foreach (GraphObject::members() as $graph_object) {
-            /** @var GraphObject $graph_object */
+        foreach (GraphObjectType::members() as $graph_object) {
+            /** @var GraphObjectType $graph_object */
             $this->assertInstanceOf('Graph\GraphObject', $graph_object);
             $class_name = $graph_object->value();
             $obj = ObjectFactory::create($class_name);
