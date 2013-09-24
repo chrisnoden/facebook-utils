@@ -4,10 +4,11 @@
  *
  * PHP version 5
  *
- * This code is copyright and is the intellectual property
- * of the copyright holder named below. It may not be copied,
- * re-distributed, modified, reverse engineered or used without
- * the express written permission of the copyright holder.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,20 +16,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @category  File
- * @package   gmb-webv2
+ * @category  Abstract Class
+ * @package   facebook-graph
  * @author    Chris Noden <chris.noden@gmail.com>
  * @copyright 2013 Chris Noden
- * @license   https://www.chrisnoden.com/CLIENT-LICENSE.md Proprietary
+ * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @link      https://github.com/chrisnoden
  */
 
 namespace Graph\Object;
 
 use Graph\AccessToken\AccessTokenType;
-use GmbAdmin\Exception\FacebookInvalidObjectException;
-use GmbAdmin\Exception\InvalidArgumentException;
-use GmbAdmin\Exception\InvalidTypeException;
+use Graph\Exception\FacebookInvalidObjectException;
+use Graph\Exception\InvalidArgumentException;
+use Graph\Exception\InvalidTypeException;
 
 /**
  * Class GraphObject
@@ -40,7 +41,7 @@ use GmbAdmin\Exception\InvalidTypeException;
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @link      https://github.com/chrisnoden
  */
-class GraphObject
+class ObjectPrototype
 {
 
     /**
@@ -100,7 +101,7 @@ class GraphObject
      * @param array $fields (optional) array of field names to fetch (defaults to all)
      *
      * @return static
-     * @throws \GmbAdmin\Exception\FacebookInvalidObjectException
+     * @throws FacebookInvalidObjectException
      */
     public static function fetch($node, $fields = array())
     {
@@ -170,7 +171,7 @@ class GraphObject
      * @param string $class_name graph object name (eg Application, Payment/s, User)
      *
      * @return GraphObject
-     * @throws \GmbAdmin\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public static function create($class_name)
     {
@@ -353,7 +354,6 @@ class GraphObject
 
             // check the type matches
             if (isset($field['returns']) && gettype($value) != $field['returns']) {
-                var_dump($value);
                 throw new InvalidTypeException(
                     sprintf(
                         '%s field %s expects %s type (%s given)',
