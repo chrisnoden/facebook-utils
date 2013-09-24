@@ -85,10 +85,25 @@ class ObjectAbstractTest extends \PHPUnit_Framework_TestCase
     }
 
 
+    /**
+     * Test that setting a field value will correctly juggle the type
+     */
+    public function testFieldValueTypeJuggling()
+    {
+        $obj = new ObjectAbstract();
+        $obj->setId(123456);
+        $this->assertEquals('123456', $obj->getId());
+        $this->assertEquals('string', gettype($obj->getId()));
+    }
+
+
+    /**
+     * Try setting a field that doesn't exist
+     */
     public function testInvalidFieldNames()
     {
         $obj = new ObjectAbstract();
-        $this->setExpectedException('Graph\Exception\InvalidArgumentException');
+        $this->setExpectedException('Graph\Exception\InvalidArgumentException', 'Invalid field_name invalidfield');
         $value = $obj->getInvalidField();
     }
 }
