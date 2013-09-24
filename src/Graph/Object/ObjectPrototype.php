@@ -26,8 +26,7 @@
 
 namespace Graph\Object;
 
-use Graph\AccessToken\AccessTokenType;
-use Graph\Exception\FacebookInvalidObjectException;
+use Graph\Exception\UnsupportedObjectException;
 use Graph\Exception\InvalidArgumentException;
 use Graph\Exception\InvalidTypeException;
 
@@ -92,6 +91,10 @@ class ObjectPrototype
      * @var bool is this object new (not loaded from Facebook)
      */
     protected $is_new = true;
+    /**
+     * @var AccessTokenAbstract
+     */
+    protected $access_token;
 
 
     /**
@@ -101,7 +104,7 @@ class ObjectPrototype
      * @param array $fields (optional) array of field names to fetch (defaults to all)
      *
      * @return static
-     * @throws FacebookInvalidObjectException
+     * @throws UnsupportedObjectException
      */
     public static function fetch($node, $fields = array())
     {
@@ -122,7 +125,7 @@ class ObjectPrototype
             return $obj;
         }
 
-        throw new FacebookInvalidObjectException(
+        throw new UnsupportedObjectException(
             sprintf('Node %s not valid', $node)
         );
     }
@@ -159,7 +162,7 @@ class ObjectPrototype
             return true;
         }
 
-        throw new FacebookInvalidObjectException(
+        throw new UnsupportedObjectException(
             sprintf('Node %s not valid', $this->id)
         );
     }
@@ -170,7 +173,7 @@ class ObjectPrototype
      *
      * @param string $class_name graph object name (eg Application, Payment/s, User)
      *
-     * @return GraphObject
+     * @return ObjectPrototype
      * @throws InvalidArgumentException
      */
     public static function create($class_name)
@@ -180,7 +183,7 @@ class ObjectPrototype
         }
         $class_name = __NAMESPACE__ . '\\' . ucfirst($class_name);
         if (class_exists($class_name)) {
-            /** @var GraphObject $obj */
+            /** @var ObjectPrototype $obj */
             $obj = new $class_name;
             return $obj;
         } else {
