@@ -67,7 +67,7 @@ class ObjectFactory
 
     public static function load(GraphObjectType $type, $id)
     {
-        $class_name = __NAMESPACE__ . '\\' . $type->getValue();
+        $class_name = __NAMESPACE__ . '\\' . $type->value();
         if (class_exists($class_name)) {
             /** @var ObjectAbstract $obj */
             $obj = new $class_name;

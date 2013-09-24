@@ -38,7 +38,7 @@ use Eloquent\Enumeration\Enumeration;
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @link     https://github.com/chrisnoden/synergy
  */
-class GraphObjectType extends Enumeration
+final class GraphObjectType extends Enumeration
 {
 
     const APPLICATION = 'Application';

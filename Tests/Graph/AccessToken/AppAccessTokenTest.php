@@ -24,25 +24,35 @@
  * @link      https://github.com/chrisnoden
  */
 
-namespace GmbAdmin\Tests\Facebook\AccessToken;
+namespace Graph\Tests\AccessToken;
 
 use Graph\AccessToken\AppAccessToken;
+use Graph\GraphObjectType;
+use Graph\Object\ObjectFactory;
+use Graph\Object\Application;
 
 class AppAccessTokenTest extends \PHPUnit_Framework_TestCase
 {
 
+    /**
+     * @var int
+     */
     private $test_app_id = 2439131959;
-
+    /**
+     * @var Application
+     */
     private $application;
 
-    public function setUpBeforeClass()
+    public function setUp()
     {
-        $this->application =
+        $this->application = ObjectFactory::load(GraphObjectType::APPLICATION(), $this->test_app_id);
     }
 
     public function testBasicObject()
     {
-        $obj = new AppAccessToken()
+        $obj = new AppAccessToken($this->application);
+        $this->assertInstanceOf('Graph\AccessToken\AppAccessToken', $obj);
+        $this->assertInstanceOf('Graph\AccessToken\AccessTokenAbstract', $obj);
     }
 
 }

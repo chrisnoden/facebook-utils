@@ -24,7 +24,7 @@
  * @link      https://github.com/chrisnoden
  */
 
-namespace GmbAdmin\Tests\Facebook\Api;
+namespace Graph\Tests\Api;
 
 use Graph\Api\Config;
 use Graph\Api\GraphRequest;

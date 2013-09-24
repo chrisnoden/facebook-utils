@@ -26,6 +26,7 @@
 
 namespace Graph\Object;
 
+use Graph\Api\GraphRequest;
 use Graph\Exception\UnsupportedObjectException;
 use Graph\Exception\InvalidArgumentException;
 use Graph\Exception\InvalidTypeException;
