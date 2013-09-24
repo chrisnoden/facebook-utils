@@ -15,6 +15,7 @@
         "php": ">=5.3.25",
         "ext-date": "*",
         "ext-pcre": "*",
+        "eloquent/enumeration": "4.0.0",
         "guzzle/guzzle": "3.7.*"
     }
 }

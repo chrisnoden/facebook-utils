@@ -31,22 +31,12 @@ use Graph\Object\ObjectPrototype;
 class ObjectPrototypeTest extends \PHPUnit_Framework_TestCase
 {
 
-//    public function testFactoryMethod()
-//    {
-//        $arr = Useful::getTestFacebookUserIds('chris');
-//        $test_node = current($arr);
-//        $obj = GraphObject::fetch($test_node);
-//        $this->assertInstanceOf('GmbAdmin\Facebook\GraphObject', $obj);
-//        $this->assertEquals('Chris Noden', $obj->getName());
-//    }
-
-
     /**
      * Test the basic instantation
      */
     public function testBasicInstantiation()
     {
-        $obj = new ObjectPrototype();
+        $obj             = new ObjectPrototype();
         $fld_description = $obj->getFieldElementValue('id', 'description');
         // test the ID field details are right
         $testArr = array(
@@ -78,7 +68,7 @@ class ObjectPrototypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetInvalidFieldType()
     {
-        $obj = new ObjectPrototype();
+        $obj             = new ObjectPrototype();
         $fld_description = $obj->getFieldElementValue('id', 'description');
         $this->setExpectedException('Graph\Exception\InvalidTypeException');
         $obj->setId(123456);
