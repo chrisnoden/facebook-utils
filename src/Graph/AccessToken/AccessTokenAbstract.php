@@ -26,7 +26,7 @@
 
 namespace Graph\AccessToken;
 
-use Graph\Config;
+use Graph\Api\GraphRequest;
 use Graph\Exception\FacebookApiException;
 use Graph\Exception\FacebookConnectionException;
 use Graph\Object\Application;
@@ -92,7 +92,8 @@ abstract class AccessTokenAbstract
      */
     protected function fetchTokenInfo()
     {
-        $client   = new Client('https://graph.facebook.com');
+        $graph_request = new GraphRequest();
+        $client   = $graph_request->getClient();
         $request  = $client->get(
             sprintf(
                 '/debug_token?input_token=%s&access_token=%s',
@@ -192,11 +193,11 @@ abstract class AccessTokenAbstract
      */
     public function getAccessToken()
     {
-        if (!isset(self::$access_token) || $this->stale !== false) {
+        if (!isset($this->access_token) || $this->stale !== false) {
             $this->fetchAccessToken();
             $this->stale = false;
         }
-        return self::$access_token;
+        return $this->access_token;
     }
 
 
@@ -207,7 +208,7 @@ abstract class AccessTokenAbstract
      */
     public function isTokenCached()
     {
-        if (!is_null(self::$access_token) && !$this->stale) {
+        if (!is_null($this->access_token) && !$this->stale) {
             return true;
         }
         return false;
@@ -226,32 +227,14 @@ abstract class AccessTokenAbstract
 
 
     /**
-     * Get the HTTP Client object ready for a Graph connection
-     *
-     * @return Client
-     */
-    protected function getGraphHttpClient()
-    {
-        $client = new Client(
-            sprintf(
-                '%s://%s',
-                Config::GRAPH_USE_SSL === true ? 'https' : 'http',
-                Config::GRAPH_BASE_URL
-            )
-        );
-
-        return $client;
-    }
-
-
-    /**
      * Prepare a Graph HTTP request
      *
      * @return \Guzzle\Http\Message\RequestInterface
      */
     public function getGraphHttpRequest()
     {
-        $client = $this->getGraphHttpClient();
+        $graph_request = new GraphRequest();
+        $client = $graph_request->getClient();
         $request = $this->buildFacebookHttpRequest($client);
 
         return $request;
