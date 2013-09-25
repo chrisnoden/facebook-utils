@@ -164,11 +164,12 @@ class Application extends ObjectAbstract implements ObjectInterface
             'description' => 'The namespace for the app',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'string',
-            'editable'    => true
+            'editable'    => true,
+            'must_ask'    => false
         ),
         'restrictions' => array(
             'description' => 'Demographic restrictions set for this app',
-            'permissions' => false,
+            'permissions' => AccessTokenType::APP,
             'returns'     => 'Object',
             'editable'    => true,
             'must_ask'    => true
