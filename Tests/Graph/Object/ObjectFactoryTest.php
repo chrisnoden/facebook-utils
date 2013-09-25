@@ -54,4 +54,14 @@ class ObjectFactoryTest extends \PHPUnit_Framework_TestCase
             unset($obj);
         }
     }
+
+
+    /**
+     * A valid Facebook object but currently not supported by this library
+     */
+    public function testUnsupportedObjectType()
+    {
+        $this->setExpectedException('Graph\Exception\UnsupportedObjectException');
+        $obj = ObjectFactory::create('review');
+    }
 }

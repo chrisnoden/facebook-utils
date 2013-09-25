@@ -44,23 +44,23 @@ class ObjectFactory
     /**
      * Return a new Facebook GraphObjectType
      *
-     * @param string $object graph object name (eg Application, Payment/s, User)
+     * @param string $object_name graph object_name name (eg Application, Payment/s, User)
      *
      * @return ObjectAbstract
      * @throws UnsupportedObjectException unable to find a GraphObjectType class to support this
      */
-    public static function create($object)
+    public static function create($object_name)
     {
-        if ($object == 'payments') {
-            $object = 'payment';
+        if ($object_name == 'payments') {
+            $object_name = 'payment';
         }
-        $object = __NAMESPACE__ . '\\' . ucfirst($object);
-        if (class_exists($object)) {
+        $object_name = __NAMESPACE__ . '\\' . ucfirst($object_name);
+        if (class_exists($object_name)) {
             /** @var ObjectAbstract $obj */
-            $obj = new $object;
+            $obj = new $object_name;
             return $obj;
         } else {
-            throw new UnsupportedObjectException('Unsupported Object, class not found for ' . $object);
+            throw new UnsupportedObjectException('Unsupported Object, class not found for ' . $object_name);
         }
     }
 
@@ -72,7 +72,7 @@ class ObjectFactory
      * @param string|int      $id
      *
      * @return ObjectAbstract
-     * @throws UnsupportedObjectException
+     * @throws UnsupportedObjectException unable to find a class to support this
      */
     public static function load(GraphObjectType $type, $id)
     {
