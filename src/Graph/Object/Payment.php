@@ -155,5 +155,4 @@ class Payment extends ObjectAbstract implements ObjectInterface
             'returns'     => 'object'
         ),
     );
-
 }

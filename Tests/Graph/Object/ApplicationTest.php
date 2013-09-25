@@ -36,6 +36,14 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     private $test_app_id = 2439131959;
 
 
+    public function testBasicObject()
+    {
+        $obj = new Application();
+        $this->assertInstanceOf('Graph\Object\Application', $obj);
+        $this->assertEquals('Application', $obj->__toString());
+    }
+
+
     public function testFactoryMethod()
     {
         $obj = new Application();
