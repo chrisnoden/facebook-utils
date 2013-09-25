@@ -34,7 +34,8 @@ use Graph\Exception\InvalidTypeException;
 use Graph\AccessToken\AccessTokenAbstract;
 
 /**
- * Class GraphObjectType
+ * Class ObjectAbstract
+ * Object classes extend this class
  *
  * @category  Graph\Object
  * @package   facebook-graph
@@ -134,30 +135,6 @@ class ObjectAbstract
 
 
     /**
-     * Return a Facebook GraphObjectType object
-     *
-     * @param string $class_name graph object name (eg Application, Payment/s, User)
-     *
-     * @return ObjectAbstract
-     * @throws InvalidArgumentException
-     */
-    public static function create($class_name)
-    {
-        if ($class_name == 'payments') {
-            $class_name = 'payment';
-        }
-        $class_name = __NAMESPACE__ . '\\' . ucfirst($class_name);
-        if (class_exists($class_name)) {
-            /** @var ObjectAbstract $obj */
-            $obj = new $class_name;
-            return $obj;
-        } else {
-            throw new InvalidArgumentException('Class not found for ' . $class_name);
-        }
-    }
-
-
-    /**
      * Implement getter and setter methods
      *
      * @example getId()
@@ -245,7 +222,7 @@ class ObjectAbstract
      * @param string $field_name
      * @param string $element
      *
-     * @return mixed NULL if the element does not exist
+     * @return mixed|null
      * @throws InvalidArgumentException if the field_name does not exist for this Graph object
      */
     public function getFieldElementValue($field_name, $element)
