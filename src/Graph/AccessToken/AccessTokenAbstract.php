@@ -34,13 +34,13 @@ use Guzzle\Http\Client;
 
 /**
  * Class AccessTokenAbstract
- * Manages Facebook Access Tokens
+ * Facebook Access Tokens inherit this class
  *
- * @category Abstract Class
- * @package  facebook-graph
- * @author   Chris Noden <chris.noden@gmail.com>
- * @license  https://www.chrisnoden.com/CLIENT-LICENSE.md Proprietary
- * @link     https://github.com/chrisnoden/synergy
+ * @category  Graph\AccessToken
+ * @package   facebook-graph
+ * @author    Chris Noden <chris.noden@gmail.com>
+ * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @link      https://github.com/chrisnoden
  */
 abstract class AccessTokenAbstract
 {
