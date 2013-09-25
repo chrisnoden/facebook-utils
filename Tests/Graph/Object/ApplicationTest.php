@@ -48,4 +48,28 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals('graffitiwall', $obj->getNamespace());
     }
+
+
+    /**
+     * Ask for specific fields from Graph and ensure they are the only ones returned
+     * (plus ID which is always returned)
+     */
+    public function testInclusiveFieldRequest()
+    {
+        $obj = new Application();
+        $include_fields = array(
+            'description',
+            'subcategory'
+        );
+        $obj->load($this->test_app_id, $include_fields);
+        $fields = $obj->getFieldList();
+        $this->assertEquals($this->test_app_id, $obj->getId());
+        $this->assertEquals('Draw for your friends.', $obj->getDescription());
+        $this->assertEquals('Other', $obj->getSubcategory());
+        foreach ($fields as $field => $aData) {
+            if ($field != 'id' && isset($aData['value']) && !in_array($field, $include_fields)) {
+                $this->fail('ObjectAbstract->load() has fetched an unnecessary field from Graph - '.$field);
+            }
+        }
+    }
 }
