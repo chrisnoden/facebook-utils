@@ -93,6 +93,10 @@ class ObjectAbstract
      * @var AccessTokenAbstract
      */
     protected $access_token;
+    /**
+     * @var array
+     */
+    protected $modified_fields = array();
 
 
     /**
@@ -324,6 +328,18 @@ class ObjectAbstract
                 }
             }
 
+            // store any original value
+            if (isset($field['value']) && !is_null($field['value'])) {
+                if (isset($this->modified_fields[$field_name])) {
+                    $this->modified_fields[$field_name]['last_modified'] = new \DateTime();
+                } else {
+                    $this->modified_fields[$field_name] = array(
+                        'last_modified' => new \DateTime(),
+                        'original_value' => $field['value']
+                    );
+                }
+            }
+
             // set the value
             $field['value'] = $value;
             $this->is_modified = true;
@@ -335,5 +351,29 @@ class ObjectAbstract
         } else {
             throw new InvalidArgumentException('Invalid field_name '.$field_name);
         }
+    }
+
+
+    /**
+     * Reset the values of any modified fields to their original values
+     */
+    public function resetValues()
+    {
+        foreach ($this->modified_fields as $fieldname => $aData) {
+            $this->fields[$fieldname]['value'] = $aData['original_value'];
+        }
+        $this->modified_fields = array();
+        $this->is_modified = false;
+    }
+
+
+    /**
+     * Associative array of modified fields with their last_modified time (DateTime) and original value
+     *
+     * @return array value of member
+     */
+    public function getModifiedFields()
+    {
+        return $this->modified_fields;
     }
 }
