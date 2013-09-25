@@ -257,13 +257,13 @@ class ObjectAbstract
 
 
     /**
-     * All fields and connections returned in one big associative array
+     * All fields and their current values returned in one big associative array
      *
      * @return array
      */
     public function getFieldList()
     {
-        return array_merge($this->fields, $this->connections);
+        return $this->fields;
     }
 
 
