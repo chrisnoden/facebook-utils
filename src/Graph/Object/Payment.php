@@ -4,10 +4,11 @@
  *
  * PHP version 5
  *
- * This code is copyright and is the intellectual property
- * of the copyright holder named below. It may not be copied,
- * re-distributed, modified, reverse engineered or used without
- * the express written permission of the copyright holder.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,15 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @category  File
- * @package   gmb-webv2
+ * @category  Class
+ * @package   facebook-graph
  * @author    Chris Noden <chris.noden@gmail.com>
  * @copyright 2013 Chris Noden
- * @license   https://www.chrisnoden.com/CLIENT-LICENSE.md Proprietary
+ * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @link      https://github.com/chrisnoden
  */
 
 namespace Graph\Object;
+
+use Graph\AccessToken\AccessTokenType;
 
 /**
  * Class Payment
@@ -31,388 +34,126 @@ namespace Graph\Object;
  *
  * @see https://developers.facebook.com/docs/reference/api/payment/
  *
- * @category GmbAdmin\Facebook
+ * @category  Graph\Object
  * @package   facebook-graph
  * @author    Chris Noden <chris.noden@gmail.com>
  * @copyright 2013 Chris Noden
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @link      https://github.com/chrisnoden
  */
-class Payment extends GraphObject
+class Payment extends ObjectAbstract implements ObjectInterface
 {
 
     /**
-     * @var object containing name and id parameters
-     */
-    protected $user;
-    /**
-     * @var string url of the og:product object ordered
-     */
-    protected $product;
-    /**
-     * @var int
-     */
-    protected $quantity;
-    /**
-     * @var string unique, optional app created identifier passed in to the payment dialog
-     */
-    protected $request_id;
-    /**
-     * @var  object containing name, namespace and id
-     */
-    protected $application;
-    /**
-     * @var array of objects containing type, status, amount, currency, time_created and time_updated
-     */
-    protected $actions;
-    /**
-     * @var object containing type, product and quantity
-     */
-    protected $items;
-    /**
-     * @var string Buyer's ISO Country Code
-     */
-    protected $country;
-    /**
-     * @var string the time the payment was originally created
-     */
-    protected $created_time;
-    /**
-     * @var double exchange rate used to calculate payout amount
-     */
-    protected $payout_foreign_exchange_rate;
-    /**
-     * @var object containing user_comment and time_created
-     */
-    protected $disputes;
-    /**
-     * @var mixed shows up when a payment is made by a payment tester
-     */
-    protected $test;
-
-
-    /**
-     * Set the value of actions member
+     * Main graph parameters/properties for this object
      *
-     * @param array $actions
-     *
-     * @return void
+     * @var array
      */
-    public function setActions($actions)
-    {
-        $this->actions = $actions;
-    }
-
-
-    /**
-     * Value of member actions
-     *
-     * @return array value of member
-     */
-    public function getActions()
-    {
-        return $this->actions;
-    }
-
-
-    /**
-     * Set the value of application member
-     *
-     * @param object $application
-     *
-     * @return void
-     */
-    public function setApplication($application)
-    {
-        $this->application = $application;
-    }
-
-
-    /**
-     * Value of member application
-     *
-     * @return object value of member
-     */
-    public function getApplication()
-    {
-        return $this->application;
-    }
-
-
-    /**
-     * Set the value of country member
-     *
-     * @param string $country
-     *
-     * @return void
-     */
-    public function setCountry($country)
-    {
-        $this->country = $country;
-    }
-
+    protected $fields = array(
+        'id' => array(
+            'description' => 'The payment ID',
+            'permissions' => AccessTokenType::APP,
+            'returns'     => 'string',
+            'editable'    => false,
+            'must_ask'    => false,
+        ),
+        'user' => array(
+            'description' => 'The user\'s first and last name along with their user id',
+            'permissions' => AccessTokenType::APP,
+            'returns'     => 'object',
+            'editable'    => false,
+            'must_ask'    => false,
+        ),
+        'product' => array(
+            'description' => 'The URL of the og:product object ordered',
+            'permissions' => AccessTokenType::APP,
+            'returns'     => 'string',
+            'editable'    => false,
+            'must_ask'    => false,
+        ),
+        'quantity' => array(
+            'description' => 'The quantity of the product contained in the order',
+            'permissions' => AccessTokenType::APP,
+            'returns'     => 'integer',
+            'editable'    => false,
+            'must_ask'    => false,
+        ),
+        'request_id' => array(
+            'description' => 'The unique, optional app-created identifier passed into the JS function (255 character maximum)',
+            'permissions' => AccessTokenType::APP,
+            'returns'     => 'string',
+            'editable'    => false,
+            'must_ask'    => false,
+        ),
+        'application' => array(
+            'description' => 'The application associated with this payment',
+            'permissions' => AccessTokenType::APP,
+            'returns'     => 'object',
+            'editable'    => false,
+            'must_ask'    => false,
+        ),
+        'actions' => array(
+            'description' => 'The type, status, amount, currency, time_created and time_updated for a Payment.',
+            'permissions' => AccessTokenType::APP,
+            'returns'     => 'array',
+            'editable'    => false,
+            'must_ask'    => false,
+        ),
+        'items' => array(
+            'description' => 'The items associated with the payment containing type, product and quantity',
+            'permissions' => AccessTokenType::APP,
+            'returns'     => 'object',
+            'editable'    => false,
+            'must_ask'    => false,
+        ),
+        'country' => array(
+            'description' => 'Buyer\'s ISO Country Code for tax purposes',
+            'permissions' => AccessTokenType::APP,
+            'returns'     => 'string',
+            'editable'    => false,
+            'must_ask'    => false,
+        ),
+        'created_time' => array(
+            'description' => 'The time the Payment was originally created',
+            'permissions' => AccessTokenType::APP,
+            'returns'     => 'string',
+            'editable'    => false,
+            'must_ask'    => false,
+        ),
+        'payout_foreign_exchange_rate' => array(
+            'description' => 'Exchange rate used to calculate payout amount which is remitted in USD',
+            'permissions' => AccessTokenType::APP,
+            'returns'     => 'float',
+            'editable'    => false,
+            'must_ask'    => false,
+        ),
+        'disputes' => array(
+            'description' => 'Contains the information for a dispute including the user_comment, which is the information the user passed to FB when disputing the order, along with the time_created, this field is only returned if this payment is disputed',
+            'permissions' => AccessTokenType::APP,
+            'returns'     => 'object',
+            'editable'    => false,
+            'must_ask'    => false,
+        ),
+        'test' => array(
+            'description' => 'Optional parameter that shows up when a payment is made by a payment tester listed in the developer app',
+            'permissions' => AccessTokenType::APP,
+            'returns'     => 'boolean',
+            'editable'    => false,
+            'must_ask'    => false,
+        ),
+    );
 
     /**
-     * Value of member country
+     * Object parameters that link to other objects in the Graph
      *
-     * @return string value of member
+     * @var array
      */
-    public function getCountry()
-    {
-        return $this->country;
-    }
-
-
-    /**
-     * Set the value of created_time member
-     *
-     * @param string $created_time
-     *
-     * @return void
-     */
-    public function setCreatedTime($created_time)
-    {
-        $this->created_time = $created_time;
-    }
-
-
-    /**
-     * Value of member created_time
-     *
-     * @return string value of member
-     */
-    public function getCreatedTime()
-    {
-        return $this->created_time;
-    }
-
-
-    /**
-     * Set the value of disputes member
-     *
-     * @param object $disputes
-     *
-     * @return void
-     */
-    public function setDisputes($disputes)
-    {
-        $this->disputes = $disputes;
-    }
-
-
-    /**
-     * Value of member disputes
-     *
-     * @return object value of member
-     */
-    public function getDisputes()
-    {
-        return $this->disputes;
-    }
-
-
-    /**
-     * Set the value of extra_params member
-     *
-     * @param array $extra_params
-     *
-     * @return void
-     */
-    public function setExtraParams($extra_params)
-    {
-        $this->extra_params = $extra_params;
-    }
-
-
-    /**
-     * Value of member extra_params
-     *
-     * @return array value of member
-     */
-    public function getExtraParams()
-    {
-        return $this->extra_params;
-    }
-
-
-    /**
-     * Set the value of items member
-     *
-     * @param object $items
-     *
-     * @return void
-     */
-    public function setItems($items)
-    {
-        $this->items = $items;
-    }
-
-
-    /**
-     * Value of member items
-     *
-     * @return object value of member
-     */
-    public function getItems()
-    {
-        return $this->items;
-    }
-
-
-    /**
-     * Set the value of payout_foreign_exchange_rate member
-     *
-     * @param float $payout_foreign_exchange_rate
-     *
-     * @return void
-     */
-    public function setPayoutForeignExchangeRate($payout_foreign_exchange_rate)
-    {
-        $this->payout_foreign_exchange_rate = $payout_foreign_exchange_rate;
-    }
-
-
-    /**
-     * Value of member payout_foreign_exchange_rate
-     *
-     * @return float value of member
-     */
-    public function getPayoutForeignExchangeRate()
-    {
-        return $this->payout_foreign_exchange_rate;
-    }
-
-
-    /**
-     * Set the value of product member
-     *
-     * @param string $product
-     *
-     * @return void
-     */
-    public function setProduct($product)
-    {
-        $this->product = $product;
-    }
-
-
-    /**
-     * Value of member product
-     *
-     * @return string value of member
-     */
-    public function getProduct()
-    {
-        return $this->product;
-    }
-
-
-    /**
-     * Set the value of quantity member
-     *
-     * @param int $quantity
-     *
-     * @return void
-     */
-    public function setQuantity($quantity)
-    {
-        $this->quantity = $quantity;
-    }
-
-
-    /**
-     * Value of member quantity
-     *
-     * @return int value of member
-     */
-    public function getQuantity()
-    {
-        return $this->quantity;
-    }
-
-
-    /**
-     * Set the value of request_id member
-     *
-     * @param string $request_id
-     *
-     * @return void
-     */
-    public function setRequestId($request_id)
-    {
-        $this->request_id = $request_id;
-    }
-
-
-    /**
-     * Value of member request_id
-     *
-     * @return string value of member
-     */
-    public function getRequestId()
-    {
-        return $this->request_id;
-    }
-
-
-    /**
-     * Set the value of test member
-     *
-     * @param mixed $test
-     *
-     * @return void
-     */
-    public function setTest($test)
-    {
-        $this->test = $test;
-    }
-
-
-    /**
-     * Value of member test
-     *
-     * @return mixed value of member
-     */
-    public function getTest()
-    {
-        return $this->test;
-    }
-
-
-    /**
-     * Set the value of user member
-     *
-     * @param object $user
-     *
-     * @return void
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
-    }
-
-
-    /**
-     * Value of member user
-     *
-     * @return object value of member
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-
-    /**
-     * List of fields to fetch from Graph
-     *
-     * @param array $fields
-     *
-     * @return GraphRequest
-     */
-    public function setFields($fields)
-    {
-
-    }
+    protected $connections = array(
+        'refunds' => array(
+            'description' => 'Refunds a payment',
+            'permissions' => AccessTokenType::APP,
+            'returns'     => 'object'
+        ),
+    );
 
 }
