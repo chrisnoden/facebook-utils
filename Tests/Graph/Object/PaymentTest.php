@@ -26,6 +26,8 @@
 
 namespace Graph\Tests\Object;
 
+use Graph\GraphObjectType;
+use Graph\Object\ObjectFactory;
 use Graph\Object\Payment;
 
 class PaymentTest extends \PHPUnit_Framework_TestCase
@@ -41,8 +43,7 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
 
     public function testFactoryMethod()
     {
-        $obj = new Payment();
-        $obj->create('Payment');
+        $obj = ObjectFactory::create(GraphObjectType::PAYMENT);
         $this->assertInstanceOf('Graph\Object\Payment', $obj);
     }
 

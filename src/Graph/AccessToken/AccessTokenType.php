@@ -31,7 +31,7 @@ use Eloquent\Enumeration\Enumeration;
 /**
  * Class AccessTokenType
  *
- * @category Graph\AccessToken
+ * @category Graph\AccessTokenType
  * @package  facebook-graph
  * @author   Chris Noden <chris.noden@gmail.com>
  * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0

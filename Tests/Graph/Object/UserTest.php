@@ -26,6 +26,8 @@
 
 namespace Graph\Tests\Object;
 
+use Graph\GraphObjectType;
+use Graph\Object\ObjectFactory;
 use Graph\Object\User;
 
 class UserTest extends \PHPUnit_Framework_TestCase
@@ -41,8 +43,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
     public function testFactoryMethod()
     {
-        $obj = new User();
-        $obj->create('User');
+        $obj = ObjectFactory::create(GraphObjectType::USER);
         $this->assertInstanceOf('Graph\Object\User', $obj);
     }
 }

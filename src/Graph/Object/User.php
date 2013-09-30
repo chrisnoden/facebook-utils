@@ -27,6 +27,7 @@
 namespace Graph\Object;
 
 use Graph\AccessToken\AccessTokenType;
+
 /**
  * Class User
  * Models the Facebook User object from the Graph API

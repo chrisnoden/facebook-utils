@@ -43,5 +43,5 @@ final class GraphObjectType extends Enumeration
 
     const APPLICATION = 'Application';
     const PAYMENT     = 'Payment';
-//    const USER        = 'User';
+    const USER        = 'User';
 }
