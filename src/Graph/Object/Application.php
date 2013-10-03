@@ -408,18 +408,28 @@ class Application extends ObjectAbstract implements ObjectInterface
 
 
     /**
+     * Load the subscriptions for this Application from Facebook Graph
+     *
+     * @returns void
      * @throws \Graph\Exception\InvalidArgumentException
      */
     public function fetchSubscriptions()
     {
-        $request = new GraphRequest($this->access_token);
         if ($this->getFieldValue('id') === null) {
             throw new InvalidArgumentException('Application ID not set');
         }
+        $request = new GraphRequest();
+        $request->setAccessToken($this->getAccessToken());
         $request->setNode($this->getFieldValue('id'));
         $request->setPath('subscriptions');
         $response = $request->send();
-        $this->setSubscriptions($response->getBody(true));
+
+        $json = $response->getBody(true);
+        if ($arr = json_decode($json, true)) {
+            if (isset($arr['data']) && !empty($arr['data'])) {
+                $this->setSubscriptions($response->getBody(true));
+            }
+        }
     }
 
 
@@ -465,7 +475,7 @@ class Application extends ObjectAbstract implements ObjectInterface
         if (is_array($data)) {
             $subscription = new Subscription();
             $subscription->loadFromArray($data);
-        } elseif ($arr = json_decode($data, true) && is_array($arr)) {
+        } elseif ($arr = json_decode($data, true)) {
             $subscription = new Subscription();
             $subscription->loadFromJson($data);
         } elseif ($data instanceof Subscription) {
@@ -554,15 +564,21 @@ class Application extends ObjectAbstract implements ObjectInterface
      * The Application access_token for Facebook authentication
      *
      * @return string
+     * @throws InvalidArgumentException if a problem fetching the app access_token
      */
     public function getAccessToken()
     {
-        if (!isset($this->access_token) && $this->getFieldValue('id') !== null) {
-            $this->access_token = new AppAccessToken();
-
+        if (!isset($this->access_token)) {
+            if ($this->getFieldValue('id') !== null && isset($this->app_secret)) {
+                $this->access_token = AppAccessToken::create($this->getFieldValue('id'), $this->app_secret);
+            }
         }
 
-        return $this->access_token;
+        if ($this->access_token instanceof AppAccessToken) {
+            return $this->access_token->getAccessToken();
+        }
+
+        throw new InvalidArgumentException('Unable to fetch access token');
     }
 
 

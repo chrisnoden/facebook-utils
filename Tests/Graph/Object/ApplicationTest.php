@@ -148,11 +148,11 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testSubscriptionLoadFromFacebook()
     {
         $obj = new Application();
-        $obj->setId(532658196754458);
-        $obj->setSecret('de1faef2e6e579e43f6dc56cec7b4570');
+        $obj->setId('186973868081324');
+        $obj->setSecret('1bf86d8f9ba5e4ac22689a78ea1e8996');
         $obj->fetchSubscriptions();
 
-        var_dump($obj);
+        var_dump($obj->getSubscriptions());
     }
 
 }

@@ -26,7 +26,6 @@
 
 namespace Graph\Api;
 
-use Graph\AccessToken\AccessTokenAbstract;
 use Graph\Exception\FacebookApiException;
 use Graph\Exception\FacebookAuthException;
 use Graph\Exception\FacebookConnectionException;

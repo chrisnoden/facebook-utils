@@ -97,7 +97,7 @@ class Subscription
             } else {
                 throw new InvalidArgumentException(
                     sprintf(
-                        'incomplete array of subscription data passed to %s',
+                        'Incomplete array of subscription data passed to %s',
                         __METHOD__
                     )
                 );
