@@ -27,6 +27,9 @@
 namespace Graph\Object;
 
 use Graph\AccessToken\AccessTokenType;
+use Graph\Exception\DuplicateObjectException;
+use Graph\Exception\InvalidArgumentException;
+use Graph\Object\Application\Subscription;
 
 /**
  * Class Application
@@ -48,98 +51,103 @@ class Application extends ObjectAbstract implements ObjectInterface
      * @var string
      */
     protected $app_secret;
-
+    /**
+     * Array of subscription objects
+     *
+     * @var array
+     */
+    protected $subscriptions = array();
     /**
      * Main graph parameters/properties for this object
      *
      * @var array
      */
     protected $fields = array(
-        'id' => array(
+        'id'                        => array(
             'description' => 'The application ID',
             'permissions' => false,
             'returns'     => 'string',
             'editable'    => false,
             'must_ask'    => false
         ),
-        'name' => array(
+        'name'                      => array(
             'description' => 'The title of the application',
             'permissions' => false,
             'returns'     => 'string',
             'editable'    => false,
             'must_ask'    => false
         ),
-        'description' => array(
+        'description'               => array(
             'description' => 'The description of the application written by the 3rd party developers',
             'permissions' => false,
             'returns'     => 'string',
             'editable'    => false,
             'must_ask'    => false
         ),
-        'category' => array(
+        'category'                  => array(
             'description' => 'The category of the application',
             'permissions' => false,
             'returns'     => 'string',
             'editable'    => false,
             'must_ask'    => false
         ),
-        'company' => array(
+        'company'                   => array(
             'description' => 'The company the application belongs to',
             'permissions' => false,
             'returns'     => 'string',
             'editable'    => false,
             'must_ask'    => false
         ),
-        'icon_url' => array(
+        'icon_url'                  => array(
             'description' => 'The URL of the application\'s icon',
             'permissions' => false,
             'returns'     => 'string',
             'editable'    => false,
             'must_ask'    => false
         ),
-        'subcategory' => array(
+        'subcategory'               => array(
             'description' => 'The subcategory of the application',
             'permissions' => false,
             'returns'     => 'string',
             'editable'    => false,
             'must_ask'    => false
         ),
-        'link' => array(
+        'link'                      => array(
             'description' => 'A link to the Application on Facebook',
             'permissions' => false,
             'returns'     => 'string',
             'editable'    => false,
             'must_ask'    => false
         ),
-        'logo_url' => array(
+        'logo_url'                  => array(
             'description' => 'The URL of the application\'s logo',
             'permissions' => false,
             'returns'     => 'string',
             'editable'    => false,
             'must_ask'    => false
         ),
-        'daily_active_users' => array(
+        'daily_active_users'        => array(
             'description' => 'The number of daily active users the application has',
             'permissions' => false,
             'returns'     => 'string',
             'editable'    => false,
             'must_ask'    => false
         ),
-        'daily_active_users_rank' => array(
+        'daily_active_users_rank'   => array(
             'description' => 'Ranking of this app vs other apps comparing daily active users',
             'permissions' => false,
             'returns'     => 'string',
             'editable'    => false,
             'must_ask'    => false
         ),
-        'weekly_active_users' => array(
+        'weekly_active_users'       => array(
             'description' => 'The number of weekly active users the application has',
             'permissions' => false,
             'returns'     => 'string',
             'editable'    => false,
             'must_ask'    => false
         ),
-        'monthly_active_users' => array(
+        'monthly_active_users'      => array(
             'description' => 'The number of monthly active users the application has',
             'permissions' => false,
             'returns'     => 'string',
@@ -153,28 +161,28 @@ class Application extends ObjectAbstract implements ObjectInterface
             'editable'    => false,
             'must_ask'    => false
         ),
-        'migrations' => array(
+        'migrations'                => array(
             'description' => 'Migrations settings for app profile',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'array',
             'editable'    => true,
             'must_ask'    => true
         ),
-        'namespace' => array(
+        'namespace'                 => array(
             'description' => 'The namespace for the app',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'string',
             'editable'    => true,
             'must_ask'    => false
         ),
-        'restrictions' => array(
+        'restrictions'              => array(
             'description' => 'Demographic restrictions set for this app',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'Object',
             'editable'    => true,
             'must_ask'    => true
         ),
-        'app_domains' => array(
+        'app_domains'               => array(
             'description' => 'Domains and subdomains this app can use',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'array',
@@ -188,126 +196,126 @@ class Application extends ObjectAbstract implements ObjectInterface
             'editable'    => true,
             'must_ask'    => true
         ),
-        'auth_dialog_headline' => array(
+        'auth_dialog_headline'      => array(
             'description' => 'One line description of an app that appears in the Auth Dialog',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'string',
             'editable'    => true,
             'must_ask'    => true
         ),
-        'canvas_url' => array(
+        'canvas_url'                => array(
             'description' => 'The non-secure URL from which Canvas app content is loaded',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'string',
             'editable'    => true,
             'must_ask'    => true
         ),
-        'contact_email' => array(
+        'contact_email'             => array(
             'description' => 'Email address listed for users to contact developers',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'string',
             'editable'    => true,
             'must_ask'    => true
         ),
-        'created_time' => array(
+        'created_time'              => array(
             'description' => 'Unix timestamp that indicates when the app was created',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'int',
             'editable'    => false,
             'must_ask'    => true
         ),
-        'creator_uid' => array(
+        'creator_uid'               => array(
             'description' => 'User ID of the creator of this app',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'int',
             'editable'    => false,
             'must_ask'    => true
         ),
-        'deauth_callback_url' => array(
+        'deauth_callback_url'       => array(
             'description' => 'URL that is pinged whenever a user removes the app',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'string',
             'editable'    => true,
             'must_ask'    => true
         ),
-        'page_tab_default_name' => array(
+        'page_tab_default_name'     => array(
             'description' => 'The title of the app when used in a Page Tab',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'string',
             'editable'    => true,
             'must_ask'    => true
         ),
-        'page_tab_url' => array(
+        'page_tab_url'              => array(
             'description' => 'The non-secure URL from which Page Tab app content is loaded',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'string',
             'editable'    => true,
             'must_ask'    => true
         ),
-        'privacy_policy_url' => array(
+        'privacy_policy_url'        => array(
             'description' => 'The URL that links to a Privacy Policy for the app',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'string',
             'editable'    => true,
             'must_ask'    => true
         ),
-        'profile_section_url' => array(
+        'profile_section_url'       => array(
             'description' => 'The desktop URL that is a direct link to the section created when your app creates objects for collections',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'string',
             'editable'    => true,
             'must_ask'    => true
         ),
-        'secure_canvas_url' => array(
+        'secure_canvas_url'         => array(
             'description' => 'The secure URL from which Canvas app content is loaded',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'string',
             'editable'    => true,
             'must_ask'    => true
         ),
-        'secure_page_tab_url' => array(
+        'secure_page_tab_url'       => array(
             'description' => 'The secure URL from which Page Tab app content is loaded',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'string',
             'editable'    => true,
             'must_ask'    => true
         ),
-        'server_ip_whitelist' => array(
+        'server_ip_whitelist'       => array(
             'description' => 'App requests must originate from this comma-separated list of IP addresses',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'string',
             'editable'    => true,
             'must_ask'    => true
         ),
-        'social_discovery' => array(
+        'social_discovery'          => array(
             'description' => 'Indicates whether app usage stories show up in the Ticker or News Feed',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'bool',
             'editable'    => true,
             'must_ask'    => true
         ),
-        'terms_of_service_url' => array(
+        'terms_of_service_url'      => array(
             'description' => 'URL to Terms of Service which is linked to in Auth Dialog',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'string',
             'editable'    => true,
             'must_ask'    => true
         ),
-        'user_support_email' => array(
+        'user_support_email'        => array(
             'description' => 'Main contact email for this app',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'string',
             'editable'    => true,
             'must_ask'    => true
         ),
-        'user_support_url' => array(
+        'user_support_url'          => array(
             'description' => 'URL of support for users of an app shown in Canvas footer',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'string',
             'editable'    => true,
             'must_ask'    => true
         ),
-        'website_url' => array(
+        'website_url'               => array(
             'description' => 'URL of a website that integrates with this app',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'string',
@@ -315,34 +323,33 @@ class Application extends ObjectAbstract implements ObjectInterface
             'must_ask'    => true
         ),
     );
-
     /**
      * Object parameters that link to other objects in the Graph
      *
      * @var array
      */
     protected $connections = array(
-        'accounts' => array(
+        'accounts'           => array(
             'description' => 'Test User accounts associated with the app',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'array'
         ),
-        'achievements' => array(
+        'achievements'       => array(
             'description' => 'Achievements registered for the app',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'array'
         ),
-        'banned' => array(
+        'banned'             => array(
             'description' => 'Banned users from your app',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'array'
         ),
-        'groups' => array(
+        'groups'             => array(
             'description' => 'Groups for this app',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'array'
         ),
-        'insights' => array(
+        'insights'           => array(
             'description' => 'Usage metrics for this application',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'array'
@@ -352,37 +359,37 @@ class Application extends ObjectAbstract implements ObjectInterface
             'permissions' => AccessTokenType::APP,
             'returns'     => 'array'
         ),
-        'payments' => array(
+        'payments'           => array(
             'description' => 'The list of Facebook Credits orders associated with the application',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'array'
         ),
-        'picture' => array(
+        'picture'            => array(
             'description' => 'The application\'s profile picture with maximum dimensions of 75x75 pixels suitable for embedding as the source of an image tag',
             'permissions' => false,
             'returns'     => 'string'
         ),
-        'roles' => array(
+        'roles'              => array(
             'description' => 'The developer roles defined for this application',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'array'
         ),
-        'staticresources' => array(
+        'staticresources'    => array(
             'description' => 'Usage stats about the canvas application\'s static resources, such as javascript and CSS, and which ones are being flushed to browsers early',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'array'
         ),
-        'subscriptions' => array(
+        'subscriptions'      => array(
             'description' => 'All of the subscriptions this application has for real-time notifications',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'array'
         ),
-        'translations' => array(
+        'translations'       => array(
             'description' => 'The translated strings for this application',
             'permissions' => AccessTokenType::APP,
             'returns'     => 'array'
         ),
-        'scores' => array(
+        'scores'             => array(
             'description' => 'Scores for the user and their friends',
             'permissions' => AccessTokenType::USER,
             'returns'     => 'array'
@@ -391,15 +398,118 @@ class Application extends ObjectAbstract implements ObjectInterface
 
 
     /**
+     * Set all the subscriptions replacing any current stored subscriptions
+     *
+     * @param mixed $subscriptions array of Subscription objects or associative array or JSON
+     *
+     * @return $this
+     * @throws DuplicateObjectException thrown if data contains a duplicate subscription
+     * @throws InvalidArgumentException thrown if the data is not valid
+     */
+    public function setSubscriptions($subscriptions)
+    {
+        // empty the subscriptions array
+        $this->subscriptions = array();
+
+        if (is_array($subscriptions)) {
+            foreach ($subscriptions as $data) {
+                $this->addSubscription($data);
+            }
+        } elseif ($arr = json_decode($subscriptions, true)) {
+            foreach ($arr as $data) {
+                $this->addSubscription($data);
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * Add a realtime callback subscription to the Application
+     *
+     * @param mixed $data Subscription object or JSON or associative array
+     *
+     * @return $this
+     * @throws DuplicateObjectException thrown if this subscription is already stored
+     * @throws InvalidArgumentException thrown if the data is not valid
+     */
+    public function addSubscription($data)
+    {
+        if (is_array($data)) {
+            $subscription = new Subscription();
+            $subscription->loadFromArray($data);
+        } elseif ($arr = json_decode($data, true) && is_array($arr)) {
+            $subscription = new Subscription();
+            $subscription->loadFromJson($data);
+        } elseif ($data instanceof Subscription) {
+            $subscription = $data;
+        }
+
+        if (isset($subscription) && $subscription instanceof Subscription) {
+            if ($subscription->valid() && $this->duplicateSubscription($subscription)) {
+                throw new DuplicateObjectException(
+                    sprintf('Duplicate Object for %s', $subscription)
+                );
+            } elseif (!$subscription->valid()) {
+                throw new InvalidArgumentException('Empty or invalid subscription object passed to ' . __METHOD__);
+            }
+            $this->subscriptions[] = $subscription;
+        } else {
+            throw new InvalidArgumentException(
+                sprintf(
+                    '%s expects valid Subscription object or valid JSON or valid array',
+                    __METHOD__
+                )
+            );
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * Look to see if this Subscription is already in our array of subscriptions
+     *
+     * @param Subscription $subscription
+     *
+     * @return bool
+     */
+    protected function duplicateSubscription(Subscription $subscription)
+    {
+        foreach ($this->subscriptions as $sub) {
+            if ($subscription === $sub) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * All our Realtime Callback Subscriptions
+     *
+     * @return array of Subscription objects
+     */
+    public function getSubscriptions()
+    {
+        return $this->subscriptions;
+    }
+
+
+    /**
      * Set the secret of the application
      *
      * @param string $app_secret
      *
-     * @return void
+     * @return $this
      */
     public function setSecret($app_secret)
     {
         $this->app_secret = $app_secret;
+
+        return $this;
     }
 
 

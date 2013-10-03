@@ -27,6 +27,7 @@
 namespace Graph\Tests\Object;
 
 use Graph\Object\Application;
+use Graph\Object\Application\Subscription;
 
 class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
@@ -35,6 +36,19 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
      */
     private $test_app_id = 2439131959;
 
+    private $testSubscriptionArray = array(
+        array(
+            "object" => "user",
+            "callback_url" => "http://realtime.myapp.com/callback",
+            "fields" => array("hometown", "friends"),
+            "active" => true
+        ), array(
+            "object" => "page",
+            "callback_url" => "http://realtime.myapp.com/callback",
+            "fields" => array("checkins"),
+            "active" => true
+        )
+    );
 
     public function testBasicObject()
     {
@@ -80,4 +94,54 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             }
         }
     }
+
+
+    public function testSetSubscriptionsFromArray()
+    {
+        $obj = new Application();
+        $obj->setSubscriptions($this->testSubscriptionArray);
+        $subs = $obj->getSubscriptions();
+        $this->assertEquals(
+            count($this->testSubscriptionArray),
+            count($subs),
+            'Expecting '.count($this->testSubscriptionArray).' Subscriptions'
+        );
+        /** @var Subscription $subscription */
+        foreach ($subs as $key => $subscription) {
+            foreach ($subscription as $name => $value) {
+                if (!isset($this->testSubscriptionArray[$key])) {
+                    $this->fail('Extra Subscription object created');
+                } elseif (!isset($this->testSubscriptionArray[$key][$name])) {
+                    $this->fail('Extra Subscription parameter created');
+                }
+                $this->assertEquals($this->testSubscriptionArray[$key][$name], $value);
+            }
+        }
+    }
+
+
+    public function testSetSubscriptionsFromJson()
+    {
+        $obj = new Application();
+        $obj->setSubscriptions(json_encode($this->testSubscriptionArray));
+        $subs = $obj->getSubscriptions();
+        $this->assertEquals(
+            count($this->testSubscriptionArray),
+            count($subs),
+            'Expecting '.count($this->testSubscriptionArray).' Subscriptions'
+        );
+        /** @var Subscription $subscription */
+        foreach ($subs as $key => $subscription) {
+            foreach ($subscription as $name => $value) {
+                if (!isset($this->testSubscriptionArray[$key])) {
+                    $this->fail('Extra Subscription object created');
+                } elseif (!isset($this->testSubscriptionArray[$key][$name])) {
+                    $this->fail('Extra Subscription parameter created');
+                }
+                $this->assertEquals($this->testSubscriptionArray[$key][$name], $value);
+            }
+        }
+    }
+
+
 }
