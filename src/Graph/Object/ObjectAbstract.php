@@ -91,10 +91,6 @@ class ObjectAbstract
      */
     protected $is_new = true;
     /**
-     * @var AccessTokenAbstract
-     */
-    protected $access_token;
-    /**
      * @var array
      */
     protected $modified_fields = array();

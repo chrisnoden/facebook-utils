@@ -30,14 +30,14 @@ use Graph\AccessToken\AccessTokenAbstract;
 use Graph\Exception\FacebookApiException;
 use Graph\Exception\FacebookAuthException;
 use Graph\Exception\FacebookConnectionException;
-use Graph\Exception\FacebookUnauthorisedUserException;
+use Graph\Exception\FacebookInsufficientPermissions;
 use Graph\Exception\InvalidArgumentException;
 use Guzzle\Http\Client;
+use Guzzle\Http\Message\RequestInterface;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Exception\BadResponseException;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Exception\CurlException;
-use Graph\AccessToken\AppAccessToken;
 
 /**
  * Class GraphRequest
@@ -53,7 +53,7 @@ class GraphRequest
 {
 
     /**
-     * @var AppAccessToken
+     * @var string
      */
     protected $access_token;
     /**
@@ -141,7 +141,7 @@ class GraphRequest
         }
         // build any query
         if (isset($this->access_token)) {
-            $this->query_parameters['access_token'] = $this->access_token->getAccessToken();
+            $this->query_parameters['access_token'] = $this->access_token;
         }
         if (count($this->fields) > 0) {
             $this->query_parameters['fields'] = join(',', $this->fields);
@@ -187,8 +187,10 @@ class GraphRequest
     /**
      * Send our RESTful Api call into Facebook Graph
      *
+     * @param RequestInterface $request
+     *
      * @return Response
-     * @throws FacebookUnauthorisedUserException
+     * @throws FacebookInsufficientPermissions
      *      thrown if we don't have permission to access the specific node (eg a User who has removed the app)
      * @throws FacebookAuthException
      *      thrown if we have insufficient permissions
@@ -196,10 +198,18 @@ class GraphRequest
      *      thrown is some unknown error came back from Facebook
      * @throws FacebookConnectionException
      *      thrown if we are unable to connect to the Facebook HTTP Api
+     * @throws InvalidArgumentException
+     *      thrown if you set a request parameter that is not an instanceof the RequestInterface interface
      */
-    public function send()
+    public function send($request = null)
     {
-        $request = $this->getRequest();
+        if (is_null($request)) {
+            $request = $this->getRequest();
+        } elseif (!$request instanceof RequestInterface) {
+            throw new InvalidArgumentException(
+                sprintf('%s expects instanceof RequestInterface as parameter', __METHOD__)
+            );
+        }
 
         $try = 1;
         do {
@@ -213,8 +223,8 @@ class GraphRequest
                 $response = $ex->getResponse();
                 if ($response instanceof Response) {
                     if ($response->getStatusCode() == 403) {
-                        // FB User is no longer our friend
-                        throw new FacebookUnauthorisedUserException(
+                        // Permissions not granted
+                        throw new FacebookInsufficientPermissions(
                             'Insufficient permissions'
                         );
                     } elseif ($response->getStatusCode() == 400) {
@@ -234,8 +244,8 @@ class GraphRequest
             } catch (BadResponseException $ex) {
                 throw new FacebookApiException('Facebook Graph Request Failed: ' . $ex->getMessage());
             } catch (CurlException $ex) {
-                $msg = preg_replace('/\[url\]\ .*$/', '', $ex->getMessage());
-                $msg = preg_replace('/^\[curl\]\ [0-9]{1,}\: /', '', $msg);
+//                $msg = preg_replace('/\[url\]\ .*$/', '', $ex->getMessage());
+//                $msg = preg_replace('/^\[curl\]\ [0-9]{1,}\: /', '', $msg);
                 sleep($try);
             }
         } while (++$try < $this->max_connection_attempts);
@@ -249,7 +259,7 @@ class GraphRequest
      *
      * @param float $connection_timeout between 0.1 and 60 seconds
      *
-     * @return GraphRequest
+     * @return $this
      * @throws InvalidArgumentException
      */
     public function setConnectionTimeout($connection_timeout)
@@ -278,7 +288,7 @@ class GraphRequest
      *
      * @param int $max_connection_attempts
      *
-     * @return AppNotification
+     * @return $this
      * @throws InvalidArgumentException
      */
     public function setMaxConnectionAttempts($max_connection_attempts)
@@ -307,7 +317,7 @@ class GraphRequest
      *
      * @param string $node
      *
-     * @return GraphRequest
+     * @return $this
      */
     public function setNode($node)
     {
@@ -321,7 +331,7 @@ class GraphRequest
      *
      * @param string $http_method
      *
-     * @return GraphRequest
+     * @return $this
      */
     public function setHttpMethod($http_method)
     {
@@ -341,7 +351,7 @@ class GraphRequest
      *
      * @param string $path
      *
-     * @return GraphRequest
+     * @return $this
      */
     public function setPath($path)
     {
@@ -363,7 +373,7 @@ class GraphRequest
      *
      * @param array $query_parameters
      *
-     * @return GraphRequest
+     * @return $this
      */
     public function setQueryParameters($query_parameters)
     {
@@ -377,7 +387,7 @@ class GraphRequest
      *
      * @param array $fields
      *
-     * @return GraphRequest
+     * @return $this
      * @throws InvalidArgumentException thrown if a fieldname is invalid
      */
     public function setFields($fields)
@@ -407,19 +417,14 @@ class GraphRequest
     /**
      * Set the value of access_token member
      *
-     * @param object $access_token must inherit the AccessTokenAbstract class
+     * @param string $access_token
      *
-     * @return void
-     * @throws InvalidArgumentException if the access_token is not a child class of AccessTokenAbstract
+     * @return $this
      */
     public function setAccessToken($access_token)
     {
-        if ($access_token instanceof AccessTokenAbstract) {
-            $this->access_token = $access_token;
-        } else {
-            throw new InvalidArgumentException(
-                'access_token must inherit the Graph\\AccessToken\\AccessTokenAbstract class'
-            );
-        }
+        $this->access_token = $access_token;
+
+        return $this;
     }
 }

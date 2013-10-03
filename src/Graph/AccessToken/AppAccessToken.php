@@ -26,6 +26,7 @@
 
 namespace Graph\AccessToken;
 
+use Graph\Api\GraphRequest;
 use Graph\Exception\FacebookApiException;
 use Graph\Exception\FacebookAuthException;
 use Graph\Object\Application;
@@ -45,10 +46,22 @@ use Guzzle\Http\Client;
 class AppAccessToken extends AccessTokenAbstract
 {
 
+    /**
+     * @var string
+     */
+    private $app_id;
+    /**
+     * @var string
+     */
+    private $app_secret;
 
-    public function __construct(Application $application)
+
+    public static function create($app_id, $app_secret)
     {
-        $this->application = $application;
+        $token = new AppAccessToken();
+        $token->setAppId($app_id);
+        $token->setAppSecret($app_secret);
+        return $token;
     }
 
 
@@ -61,7 +74,8 @@ class AppAccessToken extends AccessTokenAbstract
      */
     protected function fetchAccessToken()
     {
-        $client = $this->getGraphHttpClient();
+        $request = new GraphRequest();
+        $client = $request->getClient();
         $request = $this->buildFacebookHttpRequest($client);
         $response = $request->send();
         if ($response->getStatusCode() == 200) {
@@ -94,12 +108,37 @@ class AppAccessToken extends AccessTokenAbstract
         $request  = $client->get(
             sprintf(
                 '/oauth/access_token?client_id=%s&client_secret=%s&grant_type=client_credentials',
-                $this->application->getId(),
-                $this->application->getSecret()
+                $this->app_id,
+                $this->app_secret
             )
         );
 
         return $request;
     }
 
+
+    /**
+     * Set the value of app_id member
+     *
+     * @param string $app_id
+     *
+     * @return void
+     */
+    public function setAppId($app_id)
+    {
+        $this->app_id = $app_id;
+    }
+
+
+    /**
+     * Set the value of app_secret member
+     *
+     * @param string $app_secret
+     *
+     * @return void
+     */
+    public function setAppSecret($app_secret)
+    {
+        $this->app_secret = $app_secret;
+    }
 }

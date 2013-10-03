@@ -27,9 +27,11 @@
 namespace Graph\Object;
 
 use Graph\AccessToken\AccessTokenType;
+use Graph\Api\GraphRequest;
 use Graph\Exception\DuplicateObjectException;
 use Graph\Exception\InvalidArgumentException;
 use Graph\Object\Application\Subscription;
+use Graph\AccessToken\AppAccessToken;
 
 /**
  * Class Application
@@ -57,6 +59,14 @@ class Application extends ObjectAbstract implements ObjectInterface
      * @var array
      */
     protected $subscriptions = array();
+    /**
+     * @var AppAccessToken
+     */
+    protected $access_token;
+    /**
+     * @var array our facebook permissions
+     */
+    protected $app_scope = array();
     /**
      * Main graph parameters/properties for this object
      *
@@ -398,6 +408,22 @@ class Application extends ObjectAbstract implements ObjectInterface
 
 
     /**
+     * @throws \Graph\Exception\InvalidArgumentException
+     */
+    public function fetchSubscriptions()
+    {
+        $request = new GraphRequest($this->access_token);
+        if ($this->getFieldValue('id') === null) {
+            throw new InvalidArgumentException('Application ID not set');
+        }
+        $request->setNode($this->getFieldValue('id'));
+        $request->setPath('subscriptions');
+        $response = $request->send();
+        $this->setSubscriptions($response->getBody(true));
+    }
+
+
+    /**
      * Set all the subscriptions replacing any current stored subscriptions
      *
      * @param mixed $subscriptions array of Subscription objects or associative array or JSON
@@ -521,5 +547,66 @@ class Application extends ObjectAbstract implements ObjectInterface
     public function getSecret()
     {
         return $this->app_secret;
+    }
+
+
+    /**
+     * The Application access_token for Facebook authentication
+     *
+     * @return string
+     */
+    public function getAccessToken()
+    {
+        if (!isset($this->access_token) && $this->getFieldValue('id') !== null) {
+            $this->access_token = new AppAccessToken();
+
+        }
+
+        return $this->access_token;
+    }
+
+
+    /**
+     * Return all the Facebook permissions this app requires
+     * Alias of getAppScope
+     *
+     * @return array permissions
+     */
+    public function getAppPermissions()
+    {
+        return $this->getAppScope();
+    }
+
+
+    /**
+     * Return all the Facebook permissions this app requires
+     *
+     * @return array permissions
+     */
+    public function getAppScope()
+    {
+        return $this->app_scope;
+    }
+
+
+    /**
+     * Returns the app scope (the list of permissions) as a string
+     *
+     * @return string
+     */
+    public function getAppScopeString()
+    {
+        return join(',', $this->app_scope);
+    }
+
+
+    /**
+     * Sets the list of permissions the app needs on Facebook
+     *
+     * @param string $scope comma delimited list
+     */
+    public function setAppScopeString($scope)
+    {
+        $this->app_scope = explode(',', $scope);
     }
 }

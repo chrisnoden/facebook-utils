@@ -27,7 +27,8 @@
 namespace Graph\Exception;
 
 /**
- * Class FacebookUnauthorisedUserException
+ * Class FacebookInsufficientPermissions
+ * Thrown if we do not have enough permissions to query this Object
  *
  * @category GmbAdmin\Exception
  * @package  gmb-webv2
@@ -35,7 +36,7 @@ namespace Graph\Exception;
  * @license  https://www.chrisnoden.com/CLIENT-LICENSE.md Proprietary
  * @link     https://github.com/chrisnoden/synergy
  */
-class FacebookUnauthorisedUserException extends FacebookException
+class FacebookInsufficientPermissions extends FacebookException
 {
 
 }

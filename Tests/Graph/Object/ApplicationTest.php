@@ -26,6 +26,7 @@
 
 namespace Graph\Tests\Object;
 
+use Graph\AccessToken\AppAccessToken;
 use Graph\Object\Application;
 use Graph\Object\Application\Subscription;
 
@@ -143,5 +144,15 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+
+    public function testSubscriptionLoadFromFacebook()
+    {
+        $obj = new Application();
+        $obj->setId(532658196754458);
+        $obj->setSecret('de1faef2e6e579e43f6dc56cec7b4570');
+        $obj->fetchSubscriptions();
+
+        var_dump($obj);
+    }
 
 }

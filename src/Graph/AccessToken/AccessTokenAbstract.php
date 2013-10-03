@@ -28,6 +28,7 @@ namespace Graph\AccessToken;
 
 use Graph\Api\GraphRequest;
 use Graph\Exception\FacebookApiException;
+use Graph\Exception\FacebookAuthException;
 use Graph\Exception\FacebookConnectionException;
 use Graph\Object\Application;
 use Guzzle\Http\Client;
@@ -46,17 +47,9 @@ abstract class AccessTokenAbstract
 {
 
     /**
-     * @var Application $app_credentials ;
-     */
-    protected $application;
-    /**
      * @var bool is the access token stale
      */
     protected $stale = false;
-    /**
-     * @var array our facebook permissions
-     */
-    protected $app_scope = array();
     /**
      * @var \DateTime when was this session loaded
      */
@@ -76,11 +69,13 @@ abstract class AccessTokenAbstract
 
 
     /**
-     * Instantiate a new AccessToken
+     * Fetch and store a new App access_token from Facebook
      *
-     * @param Application $application
+     * @return string the access_token
+     * @throws FacebookAuthException if our request was denied
+     * @throws FacebookApiException if some unexpected response was received from Facebook
      */
-    abstract public function __construct(Application $application);
+    abstract protected function fetchAccessToken();
 
 
     /**
@@ -92,7 +87,7 @@ abstract class AccessTokenAbstract
      */
     protected function fetchTokenInfo()
     {
-        $graph_request = new GraphRequest();
+        $graph_request = new GraphRequest($this->access_token);
         $client   = $graph_request->getClient();
         $request  = $client->get(
             sprintf(
@@ -116,62 +111,6 @@ abstract class AccessTokenAbstract
                 sprintf('Facebook error: %s', $response->getBody(true))
             );
         }
-    }
-
-
-    /**
-     * Facebook App ID (Also known as API Key or clientId)
-     *
-     * @return string Facebook appId
-     */
-    public function getAppId()
-    {
-        return $this->application->getId();
-    }
-
-
-    /**
-     * Return all the Facebook permissions this app requires
-     * Alias of getAppScope
-     *
-     * @return array permissions
-     */
-    public function getAppPermissions()
-    {
-        return $this->getAppScope();
-    }
-
-
-    /**
-     * Return all the Facebook permissions this app requires
-     *
-     * @return array permissions
-     */
-    public function getAppScope()
-    {
-        return $this->app_scope;
-    }
-
-
-    /**
-     * Returns the app scope (the list of permissions) as a string
-     *
-     * @return string
-     */
-    public function getAppScopeString()
-    {
-        return join(',', $this->app_scope);
-    }
-
-
-    /**
-     * Sets the list of permissions the app needs on Facebook
-     *
-     * @param string $scope comma delimited list
-     */
-    public function setAppScopeString($scope)
-    {
-        $this->app_scope = explode(',', $scope);
     }
 
 
