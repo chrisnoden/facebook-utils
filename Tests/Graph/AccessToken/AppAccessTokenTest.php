@@ -35,24 +35,38 @@ class AppAccessTokenTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var int
+     * @var string
      */
-    private $test_app_id = 2439131959;
+    private $test_app_id = '186973868081324';
     /**
-     * @var Application
+     * @var string
      */
-    private $application;
+    private $test_app_secret = '1bf86d8f9ba5e4ac22689a78ea1e8996';
+    /**
+     * @var string
+     */
+    private $access_token;
 
-    public function setUp()
-    {
-        $this->application = ObjectFactory::load(GraphObjectType::APPLICATION(), $this->test_app_id);
-    }
 
     public function testBasicObject()
     {
-        $obj = new AppAccessToken($this->application);
+        $obj = AppAccessToken::create($this->test_app_id, $this->test_app_secret);
         $this->assertInstanceOf('Graph\AccessToken\AppAccessToken', $obj);
         $this->assertInstanceOf('Graph\AccessToken\AccessTokenAbstract', $obj);
+    }
+
+
+    public function testObjectLoadFromFacebook()
+    {
+        $obj = new AppAccessToken();
+        $obj->setAppId($this->test_app_id);
+        $obj->setAppSecret($this->test_app_secret);
+        $access_token = $obj->getAccessToken();
+        $arr = explode('|', $access_token);
+        $this->assertEquals($this->test_app_id, $arr[0]);
+        $this->access_token = $access_token;
+
+        $token_info = $obj->getTokenInfo($access_token);
     }
 
 }

@@ -66,6 +66,10 @@ abstract class AccessTokenAbstract
      * @var string the server API token
      */
     protected $access_token;
+    /**
+     * @var array
+     */
+    protected $token_info;
 
 
     /**
@@ -81,35 +85,55 @@ abstract class AccessTokenAbstract
     /**
      * Queries the access_token with Facebook to confirm it's validity, etc
      *
+     * @param string $access_token token you want info on
+     *
      * @return string the access_token
      * @throws FacebookApiException
      * @throws FacebookConnectionException if unable to connect to Facebook over HTTPS
      */
-    protected function fetchTokenInfo()
+    protected function fetchTokenInfo($access_token)
     {
-        $graph_request = new GraphRequest($this->access_token);
+        $graph_request = new GraphRequest();
         $client   = $graph_request->getClient();
         $request  = $client->get(
             sprintf(
                 '/debug_token?input_token=%s&access_token=%s',
-                $this->access_token,
+                $access_token,
                 $this->access_token
             )
         );
         $response = $request->send();
         if ($response->getStatusCode() == 200) {
             $json = $response->getBody(true);
-            if ($arr = json_decode($json)) {
-                $this->expires_at = new \DateTime('@' . $arr['data']['expires_at']);
-                $this->is_valid   = $arr['data']['is_valid'];
-                if (isset($arr['data']['scopes'])) {
-                    $this->app_scope = $arr['data']['scopes'];
+            if ($arr = json_decode($json, true)) {
+                $this->token_info = $arr;
+                if (isset($arr['data']['is_valid'])) {
+                    $this->is_valid = $arr['data']['is_valid'];
                 }
             }
         } else {
             throw new FacebookConnectionException(
                 sprintf('Facebook error: %s', $response->getBody(true))
             );
+        }
+    }
+
+
+    /**
+     * Array of token info from Facebook
+     *
+     * @param string $access_token token you want info on
+     *
+     * @return array
+     */
+    public function getTokenInfo($access_token)
+    {
+        if (is_null($this->token_info) && isset($this->access_token)) {
+            $this->fetchTokenInfo($access_token);
+        }
+
+        if (isset($this->token_info) && is_array($this->token_info)) {
+            return $this->token_info;
         }
     }
 
@@ -132,9 +156,10 @@ abstract class AccessTokenAbstract
      */
     public function getAccessToken()
     {
-        if (!isset($this->access_token) || $this->stale !== false) {
+        if (!isset($this->access_token) || $this->stale !== false || $this->is_valid == false) {
             $this->fetchAccessToken();
             $this->stale = false;
+            $this->is_valid = true;
         }
         return $this->access_token;
     }

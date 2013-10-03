@@ -56,6 +56,12 @@ class AppAccessToken extends AccessTokenAbstract
     private $app_secret;
 
 
+    /**
+     * @param string $app_id
+     * @param string $app_secret
+     *
+     * @return AppAccessToken
+     */
     public static function create($app_id, $app_secret)
     {
         $token = new AppAccessToken();
@@ -105,6 +111,7 @@ class AppAccessToken extends AccessTokenAbstract
      */
     protected function buildFacebookHttpRequest(Client $client)
     {
+
         $request  = $client->get(
             sprintf(
                 '/oauth/access_token?client_id=%s&client_secret=%s&grant_type=client_credentials',
