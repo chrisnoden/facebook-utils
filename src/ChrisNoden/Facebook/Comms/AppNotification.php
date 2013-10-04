@@ -226,10 +226,12 @@ class AppNotification
      *
      * @param string $access_token
      *
-     * @return void
+     * @return $this
      */
     public function setAccessToken($access_token)
     {
         $this->access_token = $access_token;
+
+        return $this;
     }
 }

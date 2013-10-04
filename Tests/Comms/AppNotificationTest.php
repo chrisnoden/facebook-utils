@@ -26,7 +26,40 @@
 
 namespace ChrisNoden\Tests\Comms;
 
+use ChrisNoden\Facebook\Comms\AppNotification;
+use ChrisNoden\Facebook\Graph\Object\Application;
+
 class AppNotificationTest extends \PHPUnit_Framework_TestCase
 {
+
+    /**
+     * @var string
+     */
+    private $test_app_id = '365709729894';
+    /**
+     * @var string
+     */
+    private $test_app_secret = '1bf86d8f9ba5e4ac22689a78ea1e8996';
+
+
+    public function testObjectInstantiation()
+    {
+        $obj = new AppNotification();
+        $this->assertInstanceOf('ChrisNoden\Facebook\Comms\AppNotification', $obj);
+    }
+
+    public function testValidNotification()
+    {
+        $application = new Application();
+        $application->setId($this->test_app_id);
+        $application->setSecret($this->test_app_secret);
+        $access_token = $application->getAccessToken();
+
+        $notification = AppNotification::create()
+            ->setAccessToken($access_token)
+            ->setMessage('This is a test message')
+            ->setFacebookUserId('676242293')
+            ->send();
+    }
 
 }
