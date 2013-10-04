@@ -24,10 +24,10 @@
  * @link      https://github.com/chrisnoden
  */
 
-namespace Graph\Tests\Object;
+namespace ChrisNoden\Tests\Graph\Object;
 
-use Graph\GraphObjectType;
-use Graph\Object\ObjectFactory;
+use ChrisNoden\Facebook\Graph\GraphObjectType;
+use ChrisNoden\Facebook\Graph\Object\ObjectFactory;
 
 class ObjectFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -40,11 +40,11 @@ class ObjectFactoryTest extends \PHPUnit_Framework_TestCase
     {
         foreach (GraphObjectType::members() as $graph_object) {
             /** @var GraphObjectType $graph_object */
-            $this->assertInstanceOf('Graph\GraphObjectType', $graph_object);
+            $this->assertInstanceOf('ChrisNoden\Facebook\Graph\GraphObjectType', $graph_object);
             $class_name = $graph_object->value();
             $obj = ObjectFactory::create($class_name);
-            $this->assertInstanceOf('Graph\Object\ObjectAbstract', $obj);
-            $this->assertInstanceOf('Graph\Object\\'.$class_name, $obj);
+            $this->assertInstanceOf('ChrisNoden\Facebook\Graph\Object\ObjectAbstract', $obj);
+            $this->assertInstanceOf('ChrisNoden\Facebook\Graph\Object\\'.$class_name, $obj);
             $this->assertEquals($class_name, $obj->__toString());
             // all objects have an ID field - if not then this will throw an InvalidArgumentException
             $obj->getFieldDetails('id');
@@ -61,7 +61,7 @@ class ObjectFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnsupportedObjectType()
     {
-        $this->setExpectedException('Graph\Exception\UnsupportedObjectException');
+        $this->setExpectedException('ChrisNoden\Facebook\Exception\UnsupportedObjectException');
         $obj = ObjectFactory::create('review');
     }
 }

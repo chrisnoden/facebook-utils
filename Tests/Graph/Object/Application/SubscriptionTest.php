@@ -24,9 +24,9 @@
  * @link      https://github.com/chrisnoden
  */
 
-namespace Graph\Tests\Object\Application;
+namespace ChrisNoden\Tests\Graph\Object\Application;
 
-use Graph\Object\Application\Subscription;
+use ChrisNoden\Facebook\Graph\Object\Application\Subscription;
 
 class SubscriptionTest extends \PHPUnit_Framework_TestCase
 {
@@ -41,7 +41,7 @@ class SubscriptionTest extends \PHPUnit_Framework_TestCase
     public function testBasicObject()
     {
         $obj = new Subscription();
-        $this->assertInstanceOf('Graph\Object\Application\Subscription', $obj);
+        $this->assertInstanceOf('ChrisNoden\Facebook\Graph\Object\Application\Subscription', $obj);
         $this->assertNull($obj->__toString());
     }
 

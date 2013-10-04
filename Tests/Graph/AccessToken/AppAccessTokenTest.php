@@ -24,12 +24,10 @@
  * @link      https://github.com/chrisnoden
  */
 
-namespace Graph\Tests\AccessToken;
+namespace ChrisNoden\Tests\Graph\AccessToken;
 
-use Graph\AccessToken\AppAccessToken;
-use Graph\GraphObjectType;
-use Graph\Object\ObjectFactory;
-use Graph\Object\Application;
+use ChrisNoden\Facebook\Graph\AccessToken\AppAccessToken;
+use ChrisNoden\Facebook\Graph\Object\Application;
 
 class AppAccessTokenTest extends \PHPUnit_Framework_TestCase
 {
@@ -51,8 +49,8 @@ class AppAccessTokenTest extends \PHPUnit_Framework_TestCase
     public function testBasicObject()
     {
         $obj = AppAccessToken::create($this->test_app_id, $this->test_app_secret);
-        $this->assertInstanceOf('Graph\AccessToken\AppAccessToken', $obj);
-        $this->assertInstanceOf('Graph\AccessToken\AccessTokenAbstract', $obj);
+        $this->assertInstanceOf('ChrisNoden\Facebook\Graph\AccessToken\AppAccessToken', $obj);
+        $this->assertInstanceOf('ChrisNoden\Facebook\Graph\AccessToken\AccessTokenAbstract', $obj);
     }
 
 

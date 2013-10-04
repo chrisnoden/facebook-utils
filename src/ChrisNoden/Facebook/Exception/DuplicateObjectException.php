@@ -15,8 +15,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * @category  File
+  *
+ * @category  Class
  * @package   facebook-graph
  * @author    Chris Noden <chris.noden@gmail.com>
  * @copyright 2013 Chris Noden
@@ -24,15 +24,19 @@
  * @link      https://github.com/chrisnoden
  */
 
-if (!ini_get('date.timezone')) {
-    date_default_timezone_set('Europe/London');
-}
+namespace ChrisNoden\Facebook\Exception;
 
-if (!is_file($autoloadFile = __DIR__.'/../vendor/autoload.php')) {
-    throw new \LogicException('Run "composer install --dev" to create autoloader.');
-}
+/**
+ * Class DuplicateObjectException
+ * Thrown if the object already exists in the target collection or array
+ *
+ * @category Graph\Exception
+ * @package  facebook-graph
+ * @author   Chris Noden <chris.noden@gmail.com>
+ * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @link     https://github.com/chrisnoden/synergy
+ */
+class DuplicateObjectException extends InvalidArgumentException
+{
 
-/** @noinspection PhpIncludeInspection */
-$loader = require $autoloadFile;
-$loader->add('Graph\Tests', __DIR__);
-$loader->add('ChrisNoden\Tests', __DIR__);
+}

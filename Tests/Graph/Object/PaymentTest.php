@@ -24,11 +24,11 @@
  * @link      https://github.com/chrisnoden
  */
 
-namespace Graph\Tests\Object;
+namespace ChrisNoden\Tests\Graph\Object;
 
-use Graph\GraphObjectType;
-use Graph\Object\ObjectFactory;
-use Graph\Object\Payment;
+use ChrisNoden\Facebook\Graph\GraphObjectType;
+use ChrisNoden\Facebook\Graph\Object\ObjectFactory;
+use ChrisNoden\Facebook\Graph\Object\Payment;
 
 class PaymentTest extends \PHPUnit_Framework_TestCase
 {
@@ -36,7 +36,7 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
     public function testBasicObject()
     {
         $obj = new Payment();
-        $this->assertInstanceOf('Graph\Object\Payment', $obj);
+        $this->assertInstanceOf('ChrisNoden\Facebook\Graph\Object\Payment', $obj);
         $this->assertEquals('Payment', $obj->__toString());
     }
 
@@ -44,7 +44,7 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
     public function testFactoryMethod()
     {
         $obj = ObjectFactory::create(GraphObjectType::PAYMENT);
-        $this->assertInstanceOf('Graph\Object\Payment', $obj);
+        $this->assertInstanceOf('ChrisNoden\Facebook\Graph\Object\Payment', $obj);
     }
 
 }

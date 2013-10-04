@@ -1,18 +1,22 @@
 {
     "name": "chrisnoden/facebook-graph",
-    "description": "Models the Graph API Objects",
+    "description": "Models the Graph API Objects and key ",
     "minimum-stability": "dev",
     "keywords": ["facebook", "graph"],
     "license": "Apache-2.0",
-    "homepage": "https://github.com/chrisnoden/facebook-graph",
+    "homepage": "https://github.com/chrisnoden/facebook-utils",
     "authors": [
         { "name": "Chris Noden", "email": "chris.noden@gmail.com", "homepage": "http://www.chrisnoden.com" }
     ],
     "autoload": {
-        "psr-0": { "Graph": "src/" }
+        "psr-0": {
+            "ChrisNoden\\Facebook\\Graph": "src/",
+            "ChrisNoden\\Facebook\\Exception": "src/",
+            "ChrisNoden\\Facebook\\Comms": "src/"
+        }
     },
     "require": {
-        "php": ">=5.3.25",
+        "php": ">=5.3.19",
         "ext-date": "*",
         "ext-pcre": "*",
         "eloquent/enumeration": "4.0.0",

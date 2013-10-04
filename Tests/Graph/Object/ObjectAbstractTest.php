@@ -24,9 +24,9 @@
  * @link      https://github.com/chrisnoden
  */
 
-namespace Graph\Tests\Object;
+namespace ChrisNoden\Tests\Graph\Object;
 
-use Graph\Object\ObjectAbstract;
+use ChrisNoden\Facebook\Graph\Object\ObjectAbstract;
 
 class ObjectAbstractTest extends \PHPUnit_Framework_TestCase
 {
@@ -70,7 +70,7 @@ class ObjectAbstractTest extends \PHPUnit_Framework_TestCase
     {
         $obj             = new ObjectAbstract();
         $fld_description = $obj->getFieldElementValue('id', 'description');
-        $this->setExpectedException('Graph\Exception\InvalidTypeException');
+        $this->setExpectedException('ChrisNoden\Facebook\Exception\InvalidTypeException');
         $obj->setId(array(123456));
         // test the ID field details are right
         $testArr = array(
@@ -107,7 +107,7 @@ class ObjectAbstractTest extends \PHPUnit_Framework_TestCase
     public function testInvalidFieldNames()
     {
         $obj = new ObjectAbstract();
-        $this->setExpectedException('Graph\Exception\InvalidArgumentException', 'Invalid field_name invalidfield');
+        $this->setExpectedException('ChrisNoden\Facebook\Exception\InvalidArgumentException', 'Invalid field_name invalidfield');
         $value = $obj->getInvalidField();
     }
 }

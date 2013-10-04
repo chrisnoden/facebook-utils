@@ -24,11 +24,11 @@
  * @link      https://github.com/chrisnoden
  */
 
-namespace Graph\Tests\Object;
+namespace ChrisNoden\Tests\Graph\Object;
 
-use Graph\GraphObjectType;
-use Graph\Object\ObjectFactory;
-use Graph\Object\User;
+use ChrisNoden\Facebook\Graph\GraphObjectType;
+use ChrisNoden\Facebook\Graph\Object\ObjectFactory;
+use ChrisNoden\Facebook\Graph\Object\User;
 
 class UserTest extends \PHPUnit_Framework_TestCase
 {
@@ -36,7 +36,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     public function testBasicObject()
     {
         $obj = new User();
-        $this->assertInstanceOf('Graph\Object\User', $obj);
+        $this->assertInstanceOf('ChrisNoden\Facebook\Graph\Object\User', $obj);
         $this->assertEquals('User', $obj->__toString());
     }
 
@@ -44,6 +44,6 @@ class UserTest extends \PHPUnit_Framework_TestCase
     public function testFactoryMethod()
     {
         $obj = ObjectFactory::create(GraphObjectType::USER);
-        $this->assertInstanceOf('Graph\Object\User', $obj);
+        $this->assertInstanceOf('ChrisNoden\Facebook\Graph\Object\User', $obj);
     }
 }

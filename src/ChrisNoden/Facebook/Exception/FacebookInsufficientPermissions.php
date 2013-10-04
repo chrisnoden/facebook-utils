@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by Chris Noden using PhpStorm.
- * 
+ *
  * PHP version 5
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @category  File
+ * @category  Exception Class
  * @package   facebook-graph
  * @author    Chris Noden <chris.noden@gmail.com>
  * @copyright 2013 Chris Noden
@@ -24,15 +24,19 @@
  * @link      https://github.com/chrisnoden
  */
 
-if (!ini_get('date.timezone')) {
-    date_default_timezone_set('Europe/London');
-}
+namespace ChrisNoden\Facebook\Exception;
 
-if (!is_file($autoloadFile = __DIR__.'/../vendor/autoload.php')) {
-    throw new \LogicException('Run "composer install --dev" to create autoloader.');
-}
+/**
+ * Class FacebookInsufficientPermissions
+ * Thrown if we do not have enough permissions to query this Object
+ *
+ * @category GmbAdmin\Exception
+ * @package  gmb-webv2
+ * @author   Chris Noden <chris.noden@gmail.com>
+ * @license  https://www.chrisnoden.com/CLIENT-LICENSE.md Proprietary
+ * @link     https://github.com/chrisnoden/synergy
+ */
+class FacebookInsufficientPermissions extends FacebookException
+{
 
-/** @noinspection PhpIncludeInspection */
-$loader = require $autoloadFile;
-$loader->add('Graph\Tests', __DIR__);
-$loader->add('ChrisNoden\Tests', __DIR__);
+}

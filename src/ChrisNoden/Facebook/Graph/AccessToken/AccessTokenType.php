@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by Chris Noden using PhpStorm.
- * 
+ *
  * PHP version 5
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @category  File
+ * @category  Enumeration Type
  * @package   facebook-graph
  * @author    Chris Noden <chris.noden@gmail.com>
  * @copyright 2013 Chris Noden
@@ -24,15 +24,22 @@
  * @link      https://github.com/chrisnoden
  */
 
-if (!ini_get('date.timezone')) {
-    date_default_timezone_set('Europe/London');
-}
+namespace ChrisNoden\Facebook\Graph\AccessToken;
 
-if (!is_file($autoloadFile = __DIR__.'/../vendor/autoload.php')) {
-    throw new \LogicException('Run "composer install --dev" to create autoloader.');
-}
+use Eloquent\Enumeration\Enumeration;
 
-/** @noinspection PhpIncludeInspection */
-$loader = require $autoloadFile;
-$loader->add('Graph\Tests', __DIR__);
-$loader->add('ChrisNoden\Tests', __DIR__);
+/**
+ * Class AccessTokenType
+ *
+ * @category Graph\AccessTokenType
+ * @package  facebook-graph
+ * @author   Chris Noden <chris.noden@gmail.com>
+ * @license  http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @link     https://github.com/chrisnoden/synergy
+ */
+final class AccessTokenType extends Enumeration
+{
+    const APP = 'Application Access Token';
+    const USER = 'User Access Token';
+    const PAGE = 'Page Access Token';
+}

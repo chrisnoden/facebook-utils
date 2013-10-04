@@ -24,34 +24,9 @@
  * @link      https://github.com/chrisnoden
  */
 
-namespace ChrisNoden\Tests\Graph\Api;
+namespace ChrisNoden\Tests\Comms;
 
-use ChrisNoden\Facebook\Graph\Api\Config;
-use ChrisNoden\Facebook\Graph\Api\GraphRequest;
-
-class GraphRequestTest extends \PHPUnit_Framework_TestCase
+class AppNotificationTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function testBasicObject()
-    {
-        $obj = new GraphRequest();
-        $this->assertInstanceOf('ChrisNoden\Facebook\Graph\Api\GraphRequest', $obj);
-
-        $client = $obj->getClient();
-        $this->assertInstanceOf('Guzzle\Http\Client', $client);
-
-        // test the base url matches our config
-        $this->assertEquals(
-            sprintf(
-                '%s://%s',
-                Config::GRAPH_USE_SSL === true ? 'https' : 'http',
-                Config::GRAPH_BASE_URL
-            ),
-            $client->getBaseUrl()
-        );
-
-        // test the basic request
-        $request = $obj->getRequest();
-        $this->assertInstanceOf('Guzzle\Http\Message\RequestInterface', $request);
-    }
 }

@@ -24,9 +24,9 @@
  * @link      https://github.com/chrisnoden
  */
 
-namespace Graph\Tests\RealtimeUpdate;
+namespace ChrisNoden\Tests\Graph\RealtimeUpdate;
 
-use Graph\RealtimeUpdate\UpdateEntry;
+use ChrisNoden\Facebook\Graph\RealtimeUpdate\UpdateEntry;
 
 class UpdateEntryTest extends \PHPUnit_Framework_TestCase
 {

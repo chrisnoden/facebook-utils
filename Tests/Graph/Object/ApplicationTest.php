@@ -24,11 +24,11 @@
  * @link      https://github.com/chrisnoden
  */
 
-namespace Graph\Tests\Object;
+namespace ChrisNoden\Tests\Graph\Object;
 
-use Graph\AccessToken\AppAccessToken;
-use Graph\Object\Application;
-use Graph\Object\Application\Subscription;
+use ChrisNoden\Facebook\Graph\AccessToken\AppAccessToken;
+use ChrisNoden\Facebook\Graph\Object\Application;
+use ChrisNoden\Facebook\Graph\Object\Application\Subscription;
 
 class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
@@ -54,7 +54,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testBasicObject()
     {
         $obj = new Application();
-        $this->assertInstanceOf('Graph\Object\Application', $obj);
+        $this->assertInstanceOf('ChrisNoden\Facebook\Graph\Object\Application', $obj);
         $this->assertEquals('Application', $obj->__toString());
     }
 
@@ -63,7 +63,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $obj = new Application();
         $obj->load($this->test_app_id);
-        $this->assertInstanceOf('Graph\Object\Application', $obj);
+        $this->assertInstanceOf('ChrisNoden\Facebook\Graph\Object\Application', $obj);
         $this->assertEquals('Graffiti ', $obj->getName());
         $this->assertEquals(
             'http://www.facebook.com/apps/application.php?id=2439131959',

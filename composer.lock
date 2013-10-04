@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "cc30a5639648be21c9a71f0ec79792b8",
+    "hash": "3c46b9a241607e83b202a946899176d9",
     "packages": [
         {
             "name": "eloquent/enumeration",
@@ -60,12 +60,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "a40249a84ea09f10592fb6c9d63cf59a7e0a576f"
+                "reference": "b170b028c6bb5799640e46c8803015b0f9a45ed9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/a40249a84ea09f10592fb6c9d63cf59a7e0a576f",
-                "reference": "a40249a84ea09f10592fb6c9d63cf59a7e0a576f",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/b170b028c6bb5799640e46c8803015b0f9a45ed9",
+                "reference": "b170b028c6bb5799640e46c8803015b0f9a45ed9",
                 "shasum": ""
             },
             "require": {
@@ -144,7 +144,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2013-09-22 19:55:57"
+            "time": "2013-10-02 20:47:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -212,7 +212,7 @@
 
     ],
     "platform": {
-        "php": ">=5.3.25",
+        "php": ">=5.3.19",
         "ext-date": "*",
         "ext-pcre": "*"
     },
