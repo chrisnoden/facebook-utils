@@ -34,5 +34,4 @@ if (!is_file($autoloadFile = __DIR__.'/../vendor/autoload.php')) {
 
 /** @noinspection PhpIncludeInspection */
 $loader = require $autoloadFile;
-$loader->add('Graph\Tests', __DIR__);
 $loader->add('ChrisNoden\Tests', __DIR__);

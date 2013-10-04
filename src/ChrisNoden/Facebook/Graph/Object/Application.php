@@ -28,8 +28,8 @@ namespace ChrisNoden\Facebook\Graph\Object;
 
 use ChrisNoden\Facebook\Graph\AccessToken\AccessTokenType;
 use ChrisNoden\Facebook\Graph\Api\GraphRequest;
-use ChrisNoden\Facebook\ExceptionDuplicateObjectException;
-use ChrisNoden\Facebook\ExceptionInvalidArgumentException;
+use ChrisNoden\Facebook\Exception\DuplicateObjectException;
+use ChrisNoden\Facebook\Exception\InvalidArgumentException;
 use ChrisNoden\Facebook\Graph\Object\Application\Subscription;
 use ChrisNoden\Facebook\Graph\AccessToken\AppAccessToken;
 

@@ -26,7 +26,7 @@
 
 namespace ChrisNoden\Facebook\Graph\Object\Application;
 
-use ChrisNoden\Facebook\ExceptionInvalidArgumentException;
+use ChrisNoden\Facebook\Exception\InvalidArgumentException;
 
 /**
  * Class Subscription

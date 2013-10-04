@@ -150,6 +150,4 @@ class UpdateEntry
     {
         return $this->uid;
     }
-
-
 }

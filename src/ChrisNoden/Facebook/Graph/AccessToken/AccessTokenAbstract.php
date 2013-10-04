@@ -27,9 +27,9 @@
 namespace ChrisNoden\Facebook\Graph\AccessToken;
 
 use ChrisNoden\Facebook\Graph\Api\GraphRequest;
-use ChrisNoden\Facebook\ExceptionFacebookApiException;
-use ChrisNoden\Facebook\ExceptionFacebookAuthException;
-use ChrisNoden\Facebook\ExceptionFacebookConnectionException;
+use ChrisNoden\Facebook\Exception\FacebookApiException;
+use ChrisNoden\Facebook\Exception\FacebookAuthException;
+use ChrisNoden\Facebook\Exception\FacebookConnectionException;
 use ChrisNoden\Facebook\Graph\Object\Application;
 use Guzzle\Http\Client;
 

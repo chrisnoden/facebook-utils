@@ -28,10 +28,8 @@ namespace ChrisNoden\Facebook\Graph\Object;
 
 use ChrisNoden\Facebook\Graph\Api\GraphRequest;
 use ChrisNoden\Facebook\Exception\FacebookInvalidNodeException;
-use ChrisNoden\Facebook\Exception\UnsupportedObjectException;
 use ChrisNoden\Facebook\Exception\InvalidArgumentException;
 use ChrisNoden\Facebook\Exception\InvalidTypeException;
-use ChrisNoden\Facebook\Graph\AccessToken\AccessTokenAbstract;
 
 /**
  * Class ObjectAbstract

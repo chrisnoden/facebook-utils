@@ -25,10 +25,6 @@
 
 namespace GmbAdmin\Facebook\AccessToken;
 
-use GmbAdmin\Exception\GambinoException;
-use GmbAdmin\Model\Game;
-use Synergy\Logger\Logger;
-
 /**
  * Class UserAccessToken
  *

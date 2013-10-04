@@ -26,11 +26,11 @@
 
 namespace ChrisNoden\Facebook\Graph\Api;
 
-use ChrisNoden\Facebook\ExceptionFacebookApiException;
-use ChrisNoden\Facebook\ExceptionFacebookAuthException;
-use ChrisNoden\Facebook\ExceptionFacebookConnectionException;
-use ChrisNoden\Facebook\ExceptionFacebookInsufficientPermissions;
-use ChrisNoden\Facebook\ExceptionInvalidArgumentException;
+use ChrisNoden\Facebook\Exception\FacebookApiException;
+use ChrisNoden\Facebook\Exception\FacebookAuthException;
+use ChrisNoden\Facebook\Exception\FacebookConnectionException;
+use ChrisNoden\Facebook\Exception\FacebookInsufficientPermissions;
+use ChrisNoden\Facebook\Exception\InvalidArgumentException;
 use Guzzle\Http\Client;
 use Guzzle\Http\Message\RequestInterface;
 use Guzzle\Http\Message\Response;

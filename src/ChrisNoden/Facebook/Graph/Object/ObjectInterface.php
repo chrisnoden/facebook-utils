@@ -26,8 +26,8 @@
 
 namespace ChrisNoden\Facebook\Graph\Object;
 
-use ChrisNoden\Facebook\ExceptionFacebookInvalidNodeException;
-use ChrisNoden\Facebook\ExceptionInvalidArgumentException;
+use ChrisNoden\Facebook\Exception\FacebookInvalidNodeException;
+use ChrisNoden\Facebook\Exception\InvalidArgumentException;
 
 /**
  * Class ObjectInterface
