@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by Chris Noden using PhpStorm.
- * 
+ *
  * PHP version 5
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,6 +32,7 @@ use ChrisNoden\Facebook\Graph\Object\Application\Subscription;
 
 class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
+
     /**
      * @var int The Graffiti app
      */
@@ -39,17 +40,19 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
     private $testSubscriptionArray = array(
         array(
-            "object" => "user",
+            "object"       => "user",
             "callback_url" => "http://realtime.myapp.com/callback",
-            "fields" => array("hometown", "friends"),
-            "active" => true
-        ), array(
-            "object" => "page",
+            "fields"       => array("hometown", "friends"),
+            "active"       => true
+        ),
+        array(
+            "object"       => "page",
             "callback_url" => "http://realtime.myapp.com/callback",
-            "fields" => array("checkins"),
-            "active" => true
+            "fields"       => array("checkins"),
+            "active"       => true
         )
     );
+
 
     public function testBasicObject()
     {
@@ -79,7 +82,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
      */
     public function testInclusiveFieldRequest()
     {
-        $obj = new Application();
+        $obj            = new Application();
         $include_fields = array(
             'description',
             'subcategory'
@@ -91,7 +94,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Other', $obj->getSubcategory());
         foreach ($fields as $field => $aData) {
             if ($field != 'id' && isset($aData['value']) && !in_array($field, $include_fields)) {
-                $this->fail('ObjectAbstract->load() has fetched an unnecessary field from Graph - '.$field);
+                $this->fail('ObjectAbstract->load() has fetched an unnecessary field from Graph - ' . $field);
             }
         }
     }
@@ -105,7 +108,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             count($this->testSubscriptionArray),
             count($subs),
-            'Expecting '.count($this->testSubscriptionArray).' Subscriptions'
+            'Expecting ' . count($this->testSubscriptionArray) . ' Subscriptions'
         );
         /** @var Subscription $subscription */
         foreach ($subs as $key => $subscription) {
@@ -129,7 +132,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             count($this->testSubscriptionArray),
             count($subs),
-            'Expecting '.count($this->testSubscriptionArray).' Subscriptions'
+            'Expecting ' . count($this->testSubscriptionArray) . ' Subscriptions'
         );
         /** @var Subscription $subscription */
         foreach ($subs as $key => $subscription) {
@@ -147,12 +150,16 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
     public function testSubscriptionLoadFromFacebook()
     {
-        $obj = new Application();
-        $obj->setId('186973868081324');
-        $obj->setSecret('1bf86d8f9ba5e4ac22689a78ea1e8996');
-        $obj->fetchSubscriptions();
-
-        var_dump($obj->getSubscriptions());
+        if (defined('TEST_APP_ID') && defined('TEST_APP_SECRET')) {
+            $obj = new Application();
+            $obj->setId(TEST_APP_ID);
+            $obj->setSecret(TEST_APP_SECRET);
+            $obj->fetchSubscriptions();
+            $arr = $obj->getSubscriptions();
+            if (!is_array($arr)) {
+                $this->fail('Application::getSubscriptions() not returning an array');
+            }
+        }
     }
 
 }

@@ -1,2 +1,3 @@
 # Composer files
 vendor/*
+test_settings.php

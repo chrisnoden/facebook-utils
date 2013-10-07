@@ -32,6 +32,10 @@ if (!is_file($autoloadFile = __DIR__.'/../vendor/autoload.php')) {
     throw new \LogicException('Run "composer install --dev" to create autoloader.');
 }
 
+if (file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'test_settings.php')) {
+    include_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'test_settings.php');
+}
+
 /** @noinspection PhpIncludeInspection */
 $loader = require $autoloadFile;
 $loader->add('ChrisNoden\Tests', __DIR__);

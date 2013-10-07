@@ -32,14 +32,6 @@ use ChrisNoden\Facebook\Graph\Object\Application;
 class AppNotificationTest extends \PHPUnit_Framework_TestCase
 {
 
-    /**
-     * @var string
-     */
-    private $test_app_id = '365709729894';
-    /**
-     * @var string
-     */
-    private $test_app_secret = '1bf86d8f9ba5e4ac22689a78ea1e8996';
 
 
     public function testObjectInstantiation()
@@ -50,16 +42,18 @@ class AppNotificationTest extends \PHPUnit_Framework_TestCase
 
     public function testValidNotification()
     {
-        $application = new Application();
-        $application->setId($this->test_app_id);
-        $application->setSecret($this->test_app_secret);
-        $access_token = $application->getAccessToken();
+        if (defined('TEST_APP_ID') && defined('TEST_APP_SECRET') && defined('TEST_FACEBOOK_USER_ID')) {
+            $application = new Application();
+            $application->setId(TEST_APP_ID);
+            $application->setSecret(TEST_APP_SECRET);
+            $access_token = $application->getAccessToken();
 
-        $notification = AppNotification::create()
-            ->setAccessToken($access_token)
-            ->setMessage('This is a test message')
-            ->setFacebookUserId('676242293')
-            ->send();
+            $notification = AppNotification::create()
+                ->setAccessToken($access_token)
+                ->setMessage('This is a test message')
+                ->setFacebookUserId(TEST_FACEBOOK_USER_ID)
+                ->send();
+        }
     }
 
 }

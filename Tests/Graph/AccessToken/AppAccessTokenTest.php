@@ -35,36 +35,36 @@ class AppAccessTokenTest extends \PHPUnit_Framework_TestCase
     /**
      * @var string
      */
-    private $test_app_id = '186973868081324';
-    /**
-     * @var string
-     */
-    private $test_app_secret = '1bf86d8f9ba5e4ac22689a78ea1e8996';
-    /**
-     * @var string
-     */
     private $access_token;
 
 
     public function testBasicObject()
     {
-        $obj = AppAccessToken::create($this->test_app_id, $this->test_app_secret);
-        $this->assertInstanceOf('ChrisNoden\Facebook\Graph\AccessToken\AppAccessToken', $obj);
-        $this->assertInstanceOf('ChrisNoden\Facebook\Graph\AccessToken\AccessTokenAbstract', $obj);
+        if (defined('TEST_APP_ID') && defined('TEST_APP_SECRET')) {
+            $obj = AppAccessToken::create(TEST_APP_ID, TEST_APP_SECRET);
+            $this->assertInstanceOf('ChrisNoden\Facebook\Graph\AccessToken\AppAccessToken', $obj);
+            $this->assertInstanceOf('ChrisNoden\Facebook\Graph\AccessToken\AccessTokenAbstract', $obj);
+        } else {
+            $this->fail(
+                'Please create a test_settings.php file with two constants for TEST_APP_ID and TEST_APP_SECRET'
+            );
+        }
     }
 
 
     public function testObjectLoadFromFacebook()
     {
-        $obj = new AppAccessToken();
-        $obj->setAppId($this->test_app_id);
-        $obj->setAppSecret($this->test_app_secret);
-        $access_token = $obj->getAccessToken();
-        $arr = explode('|', $access_token);
-        $this->assertEquals($this->test_app_id, $arr[0]);
-        $this->access_token = $access_token;
+        if (defined('TEST_APP_ID') && defined('TEST_APP_SECRET')) {
+            $obj = new AppAccessToken();
+            $obj->setAppId(TEST_APP_ID);
+            $obj->setAppSecret(TEST_APP_SECRET);
+            $access_token = $obj->getAccessToken();
+            $arr = explode('|', $access_token);
+            $this->assertEquals(TEST_APP_ID, $arr[0]);
+            $this->access_token = $access_token;
 
-        $token_info = $obj->getTokenInfo($access_token);
+            $token_info = $obj->getTokenInfo($access_token);
+        }
     }
 
 }
