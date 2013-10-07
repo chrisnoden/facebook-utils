@@ -26,6 +26,10 @@
 namespace ChrisNoden\Facebook\Comms;
 
 use ChrisNoden\Facebook\Exception\FacebookException;
+use ChrisNoden\Facebook\Exception\FacebookApiException;
+use ChrisNoden\Facebook\Exception\FacebookAuthException;
+use ChrisNoden\Facebook\Exception\FacebookConnectionException;
+use ChrisNoden\Facebook\Exception\FacebookInsufficientPermissions;
 use ChrisNoden\Facebook\Exception\InvalidArgumentException;
 use ChrisNoden\Facebook\Graph\Api\GraphRequest;
 
@@ -78,8 +82,9 @@ class AppNotification
      * Send a notification to a Player using their Facebook userId
      *
      * @return boolean true if the message was successfully sent
-     * @throws FacebookUnauthorisedUserException
+     * @throws FacebookInsufficientPermissions
      *      thrown if the facebook user has not given permission (or has revoked permission) to our app
+     * @throws FacebookAuthException
      * @throws FacebookApiException
      * @throws FacebookConnectionException
      *      thrown if we are unable to connect to the Facebook HTTP Api
@@ -101,29 +106,6 @@ class AppNotification
         $response = $request->send();
 
         return $response->getBody();
-    }
-
-
-    /**
-     * Send a notification to a Player using their Facebook userId
-     *
-     * @param string $facebook_userId Facebook userId
-     * @param string $message message to send
-     * @param array  $params array of parameters to be encoded into the notification click response
-     *
-     * @return boolean true if the message was successfully sent
-     * @throws FacebookUnauthorisedUserException
-     *      thrown if the facebook user has not given permission (or has revoked permission) to our app
-     * @throws FacebookApiException
-     * @throws FacebookException
-     */
-    public function sendToFacebookUserId($facebook_userId, $message, Array $params = array())
-    {
-        $this->setFacebookUserId($facebook_userId);
-        $this->setMessage($message);
-        $this->setParameters($params);
-
-        return $this->send();
     }
 
 

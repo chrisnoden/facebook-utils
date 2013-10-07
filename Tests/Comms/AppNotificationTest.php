@@ -40,6 +40,7 @@ class AppNotificationTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('ChrisNoden\Facebook\Comms\AppNotification', $obj);
     }
 
+
     public function testValidNotification()
     {
         if (defined('TEST_APP_ID') && defined('TEST_APP_SECRET') && defined('TEST_FACEBOOK_USER_ID')) {
@@ -55,5 +56,25 @@ class AppNotificationTest extends \PHPUnit_Framework_TestCase
                 ->send();
         }
     }
+
+
+    public function testSendToInvalidUserId()
+    {
+        if (defined('TEST_APP_ID') && defined('TEST_APP_SECRET')) {
+            $application = new Application();
+            $application->setId(TEST_APP_ID);
+            $application->setSecret(TEST_APP_SECRET);
+            $access_token = $application->getAccessToken();
+
+            $notification = AppNotification::create()
+                ->setAccessToken($access_token)
+                ->setMessage('This is a test message')
+                ->setFacebookUserId('123456');
+            $notification->isValid();
+            $this->setExpectedException('ChrisNoden\Facebook\Exception\FacebookInsufficientPermissions');
+            $notification->send();
+        }
+    }
+
 
 }
