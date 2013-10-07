@@ -1,6 +1,6 @@
 {
-    "name": "chrisnoden/facebook-graph",
-    "description": "Models the Graph API Objects and key ",
+    "name": "chrisnoden/facebook-utils",
+    "description": "Models the Graph API Objects and key functionality of Facebook",
     "minimum-stability": "dev",
     "keywords": ["facebook", "graph"],
     "license": "Apache-2.0",
